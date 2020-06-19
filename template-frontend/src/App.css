@@ -1,0 +1,44 @@
+.app-header {
+  height: 15vh;
+  min-height: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+.app-container {
+  margin-left: 10%;
+  margin-right: 10%;
+}
+.app-body {
+  width: 100%;
+  height: 75vh;
+}
+.quote-container{
+  padding: 10% 0;
+}
+.loading-icon {
+  height:             40px;
+  width:              40px;
+  animation:          rotate 2s linear infinite;
+  transform-origin:   center center;
+  margin-left:        20px;
+}
+footer {
+  height: 10vh;
+  width: 100vw;
+}
+.logo-footer {
+  height: 100%;
+  width: 100px;
+  max-height: 100%;
+  margin: auto;
+  display: block;
+}
+@keyframes rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}
