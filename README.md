@@ -30,6 +30,15 @@ $ cd ./template-backend && npm install && npm run dev
 
 ## Please Read Before Deploying
 Prior to deploying the application, please modify this template in a few sections so that they are relevant to your app.
+### Makefile
+Specify `[HOST]` to deploy to
+```
+deploy:
+	cd ./template-frontend && npm run build && cd - \
+	cd ./template-backend && npm run clean && cd - \
+	rsync template-backend [HOST]:deployments/app-template
+```
+
 ### template-frontend
 ./public/index.html
 ```

@@ -12,6 +12,7 @@
     ]
 
   },
+  "ignorePatterns": ["build/*"],
   "globals": {
     "window": true,
     "document": true,

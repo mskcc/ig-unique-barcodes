@@ -14,10 +14,11 @@
   },
   "scripts": {
     "start": "npm run config-dev && react-scripts start",
+    "clean": "rm -rf node_modules && touch package-lock.json && rm package-lock.json",
     "config-dev": "cp ./src/configs/config.dev.js ./src/configs/config.js",
     "config-qa": "cp ./src/configs/config.qa.js ./src/configs/config.js",
     "lint": "./node_modules/.bin/eslint --fix .",
-    "build": "npm run config-qa && npm run lint && react-scripts build",
+    "build": "npm run clean && npm install && npm run config-qa && npm run lint && react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
