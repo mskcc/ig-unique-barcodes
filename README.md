@@ -14,7 +14,21 @@ Please use this as a template, but modify and engineer as you see fit. Pull requ
 ## Dependencies
 - mongo
 
-## Please Read
+## QuickStart
+### I) Frontend
+```
+$ cd ./template-frontend && npm install && npm run start
+```
+### II) Mongo
+```
+$ mongod
+```
+### III) Backend
+```
+$ cd ./template-backend && npm install && npm run dev
+```
+
+## Please Read Before Deploying
 Prior to deploying the application, please modify this template in a few sections so that they are relevant to your app.
 ### template-frontend
 ./public/index.html
