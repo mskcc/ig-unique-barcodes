@@ -13,7 +13,9 @@ export function getQuote() {
                 .then(parseResp)
                 .catch(error => {
                     checkForAuthorizationError(error);
-                    throw new Error('Unable to get Get Quotes: ' + error.message);
+                    // TODO - Replace if building frontend & backend
+                    console.error('Unable to get Get Quotes: ' + error.message);
+                    // throw new Error('Unable to get Get Quotes: ' + error.message);
                 });
 }
 
@@ -22,7 +24,9 @@ export function getQOD() {
         .then(parseResp)
         .catch(error => {
             checkForAuthorizationError(error);
-            throw new Error('Unable to get Get Quotes: ' + error.message);
+            // TODO - Replace if building frontend & backend
+            console.error('Unable to get Get Quotes: ' + error.message);
+            // throw new Error('Unable to get Get Quotes: ' + error.message);
         });
 }
 

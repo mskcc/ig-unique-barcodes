@@ -11,10 +11,14 @@ function HomePage() {
 
     const getNewQuote = (isRandom) => {
         if(isRandom){
-            setQuoteData(nextQuote);
+            // Update w/ next quote, if data wasn't returned
+            setQuoteData(nextQuote || quoteData);
             getNextQuote();
         } else {
-            getQOD().then(setQuoteData);
+            getQOD().then((newQuoteData) => {
+                // Add new quote, or use old quote, if data wasn't returned
+                setQuoteData(newQuoteData || quoteData)
+            });
         }
     };
 
@@ -37,7 +41,7 @@ function HomePage() {
                     onClick={() => getNewQuote(true)}>
                 <p>Random</p>
             </button>
-            <p className={'em4 italics mskcc-dark-blue'}>'{quoteData['quote'] || ''}'</p>
+            <p className={'em4 italics mskcc-dark-blue'}>"{quoteData.quote || ''}"</p>
             <div className={'width-350 float-right'}>
                 <p className={'em2 inline-text mskcc-dark-blue'}>- {quoteData['author'] || ''}</p>
                 <img alt='dna' className='loading-icon inline-text' src={dna}/>
