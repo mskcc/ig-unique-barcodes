@@ -1,4 +1,7 @@
-# IGO Data Team App Tempalte
+# IGO Data Team App Template
+
+![Application UI](assets/app_view.png)
+
 ## Description
 This is a barebones project exhibiting IGO Data Team's core stack - react, node, & mongo.
 
