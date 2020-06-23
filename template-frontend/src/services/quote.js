@@ -40,6 +40,6 @@ const checkForAuthorizationError = (error) => {
     const status = resp.status;
     if(status === 401){
         // Automatically redirect client to the login page
-        window.location.href = LOGIN_SERVICE;
+        window.location.href = `${LOGIN_SERVICE}/app-template`;
     }
 };
