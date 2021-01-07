@@ -1,6 +1,6 @@
 const apiResponse = require('../helpers/apiResponse');
-const {authenticateRequest} = require('../middlewares/jwt-cookie');
-const {getRandomQuote} = require('../services/services');
+const { authenticateRequest } = require('../middlewares/jwt-cookie');
+const { getRandomQuote, getCatFact } = require('../services/services');
 const Cache = require('../helpers/cache');
 const ttl = 60 * 60 * 1; // cache for 1 Hour
 const cache = new Cache(ttl); // Create a new cache service instance
@@ -22,7 +22,7 @@ exports.getRandomQuote = [
       .catch((err) => {
         return apiResponse.ErrorResponse(res, err.message);
       });
-  }
+  },
 ];
 
 /**
@@ -36,12 +36,28 @@ exports.getQuoteOfDay = [
     const key = 'GET_QUOTE_OF_DAY';
     logger.log('info', 'Retrieving quote of day');
     const retrievalFunc = () => getRandomQuote();
-    return cache.get(key, retrievalFunc)
+    return cache
+      .get(key, retrievalFunc)
       .then((quote) => {
         return apiResponse.successResponseWithData(res, 'success', quote);
       })
       .catch((err) => {
         return apiResponse.ErrorResponse(res, err.message);
       });
-  }
+  },
+];
+
+exports.getCatFact = [
+  authenticateRequest,
+  function (req, res) {
+    getCatFact()
+      .then((fact) => {
+        console.log(fact);
+        return apiResponse.successResponseWithData(res, 'success', fact);
+      })
+      .catch((response) => {
+        console.log('error');
+        return apiResponse.ErrorResponse(res, 'no cat facts');
+      });
+  },
 ];
