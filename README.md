@@ -6,7 +6,7 @@
 This is a barebones project exhibiting IGO Data Team's core stack - react, node, & mongo.
 
 Features Include:
-* MSKCC/IGO designe resources
+* MSKCC/IGO design resources
 * Axios Service Calls & Caching
 * IGO Design resources and linting standards (taken from [igo-dot-files](https://github.com/mskcc/igo-data-dotfiles))
 * CAS Authentication Setup
