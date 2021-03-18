@@ -18,9 +18,9 @@ Please use this as a template, but modify and engineer as you see fit. Pull requ
 - mongo
 
 ## QuickStart
-### I) Frontend
+### I) Frontend 
 ```
-$ cd ./template-frontend && npm install && npm run start
+$ cd ./template-frontend-react && npm install && npm run start # cd ./template-frontend-vue
 ```
 ### II) Mongo
 ```
