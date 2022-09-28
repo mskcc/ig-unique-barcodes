@@ -1,4 +1,4 @@
-# IGO Data Team App Template
+# Unique Plate Barcode Generation App for IGO
 
 ![Application UI](assets/app_view.png)
 
