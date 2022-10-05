@@ -1,8 +1,8 @@
 var express = require('express');
-var quoteRouter = require('./quote');
+var barcodeRouter = require('./barcodeGen');
 
 var app = express();
 
-app.use('/quote/', quoteRouter);
+app.use('/plateBarcode/', barcodeRouter);
 
 module.exports = app;

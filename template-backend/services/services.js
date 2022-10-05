@@ -1,24 +1,13 @@
-const QuoteModel = require('../models/QuoteModel');
-const { getNumQuotes } = require('../models/setup_deleteMe');
+const BarcodeGenModel = require('../models/BarcodeGenModel');
+// const { getNumQuotes } = require('../models/setup_deleteMe');
 const axios = require('axios');
 
 /**
- * Returns a random quote in the database
+ * Returns unique barcodes 
  * @returns {Promise<*>}
  */
-exports.getRandomQuote = async function () {
-  const id = Math.floor(Math.random() * getNumQuotes());
-  const quote = await QuoteModel.findOne({ id });
+exports.getUniqueBarcode = async function () {
 
-  if (quote == null) return;
-
-  // Redact data
-  const quoteJson = quote.toJSON();
-  delete quoteJson._id;
-  delete quoteJson.id;
-  delete quoteJson.__v;
-
-  return quoteJson;
 };
 
 exports.getCatFact = async function () {

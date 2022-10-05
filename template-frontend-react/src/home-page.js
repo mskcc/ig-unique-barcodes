@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getQOD, getQuote } from './services/quote';
+import { getBarcode } from './services/barcode';
 import { makeStyles, Button, Paper, Typography } from '@material-ui/core';
 
 import dna from './assets/dna.png';
@@ -35,51 +35,16 @@ const useStyles = makeStyles((theme) => ({
 function HomePage() {
   const classes = useStyles();
 
-  const [quoteData, setQuoteData] = useState({
-    quote: 'Science and everyday life cannot and should not be separated.',
-    author: 'Rosalind Franklin',
-  });
-  const [nextQuote, setNextQuote] = useState({});
-
-  const getNewQuote = (isRandom) => {
-    if (isRandom) {
-      // Update w/ next quote, if data wasn't returned
-      setQuoteData(nextQuote || quoteData);
-      getNextQuote();
-    } else {
-      getQOD().then((newQuoteData) => {
-        // Add new quote, or use old quote, if data wasn't returned
-        setQuoteData(newQuoteData || quoteData);
-      });
-    }
-  };
-
-  async function getNextQuote() {
-    getQuote().then(setNextQuote);
-  }
-
-  useEffect(() => {
-    // Get Quote of Day first
-    getNextQuote(false);
-  }, []);
-
   return (
     <Paper className={classes.container}>
-      <div className={classes.quote}>
-        <Typography variant='h2'>"{quoteData.quote || ''}"</Typography>
-        <Typography variant='h5' align='right'>
-          – {quoteData['author'] || ''}
-          <img alt='dna' className={classes.loadingIcon} src={dna} />
-        </Typography>
-      </div>
-      <div className={classes.buttons}>
-        <Button id='newQuote' onClick={() => getNewQuote(false)} color='primary' variant='contained' type='submit'>
-          Quote of Day
-        </Button>
-        <Button id='randomQuote' onClick={() => getNewQuote(true)} color='secondary' variant='contained' type='submit'>
-          Random Quote
-        </Button>
-      </div>
+      <div class="dropdown">
+      <button onclick="myFunction()" class="dropbtn">Choose Plate Type</button>
+        <div id="myDropdown" class="dropdown-content">
+          <a href="#">Link 1</a>
+          <a href="#">Link 2</a>
+          <a href="#">Link 3</a>
+        </div>
+    </div>
     </Paper>
   );
 }

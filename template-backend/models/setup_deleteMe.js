@@ -1,4 +1,4 @@
-const QuoteModel = require('./QuoteModel');
+const BarcodeGenModel = require('./BarcodeGenModel');
 
 const quotes = [
   {
@@ -37,18 +37,18 @@ const quotes = [
     id: 6
   },
 ];
-exports.getNumQuotes = function() {
-  return quotes.length;
-};
+// exports.getNumQuotes = function() {
+//   return quotes.length;
+// };
 
-exports.populateDB = function() {
-  let quoteModel;
-  for(let quote of quotes){
-    quoteModel = new QuoteModel(quote);
-    quoteModel.save(function (err) {
-      if (err) {
-        throw new Error(err.message);
-      }
-    });
-  }
-};
+// exports.populateDB = function() {
+//   let barcodeGenModel;
+//   for(let quote of quotes){
+//     barcodeGenModel = new BarcodeGenModel(quote);
+//     barcodeGenModel.save(function (err) {
+//       if (err) {
+//         throw new Error(err.message);
+//       }
+//     });
+//   }
+// };
