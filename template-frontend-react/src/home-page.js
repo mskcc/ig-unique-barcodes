@@ -31,6 +31,19 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
+ function getSelection() {
+
+ }
+
+ async function getNumberOfRequestedBarcodes () {
+  var x = document.getElementById("numOfBarcodes").value;
+  document.getElementById("count").innerHTML = x;
+}
+
+async function getPlateType () {
+  var myType = document.getElementById("plateTypes");
+  document.getElementById("selection").value = myType.options[myType.selectedIndex].text;
+}
 
 function HomePage() {
   const classes = useStyles();
@@ -38,12 +51,28 @@ function HomePage() {
   return (
     <Paper className={classes.container}>
       <div class="dropdown">
-      <button onclick="myFunction()" class="dropbtn">Choose Plate Type</button>
-        <div id="myDropdown" class="dropdown-content">
-          <a href="#">Link 1</a>
-          <a href="#">Link 2</a>
-          <a href="#">Link 3</a>
-        </div>
+      <b>Choose Plate Type:</b>
+        <select id="plateTypes" onchange="getPlateType()">
+        <option> ---Plate type--- </option>  
+        <option value="MSK_DNA">MSK_DNA</option>
+        <option value="MSK_RNA">MSK_RNA</option>
+        <option value="MSK_cDNA">MSK_cDNA</option>
+        <option value="MSK_LIB">MSK_LIB</option>
+        <option value="MSK_uLIB">MSK_uLIB</option>
+        <option value="CRISPR">CRISPR</option>
+        <option value="AA">AA</option>
+        <option value="MSK_CAP">MSK_CAP</option>
+        </select>
+        <p>Your selected plate type is:    
+        <input type = "text" id = "selection" size = "15"></input>
+        </p>
+        <p>Enter the number of barcodes:    
+        <input type = "text" id = "count" size = "5"></input>
+        </p>
+    </div>
+    <div className={classes.Button}>
+      <Button id='plateTypes' onClick={() => getPlateType()} color='primary' variant='contained' type='submit'>Submit Plate Type Selection</Button>
+      <Button id='numOfBarcodes' onClick={() => getNumberOfRequestedBarcodes()} color='secondary' variant='contained' type='submit'>Submit Number of Barcodes </Button>
     </div>
     </Paper>
   );
