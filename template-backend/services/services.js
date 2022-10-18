@@ -3,12 +3,12 @@ const BarcodeGenModel = require('../models/BarcodeGenModel');
 const axios = require('axios');
 //const client = new MongoClient();
 var MongoClient = require('mongodb').MongoClient;
-var url = "mongodb://localhost:27017/plate-barcodes";
-MongoClient.connect(url);
+const { logger } = require('../helpers/winston');
+MongoClient.connect(process.env.MONGODB_URL);
 //findOne()
 async function findLastIndexByPlateType(plateType) {
   const result = await MongoClient.db("plate-barcodes").collection("plateTypeLastIndex")
-                      .findOne({ plateType: plateType });
+                      .findOne({"plateType" : plateType });
   if (result) {
       console.log(`Last index found for plate type '${plateType}':`);
       console.log(result);
@@ -20,7 +20,7 @@ async function findLastIndexByPlateType(plateType) {
 
 async function updateLastIndexByNumberOfGeneratedtedBarcodes(MongoClient, plateType, lastIndex) {
   const result = await MongoClient.db("plate-barcodes").collection("plateTypeLastIndex")
-                      .updateOne({ plateType: plateType }, { $set: lastIndex + 1 });
+                      .updateOne({ "plateType" : plateType }, { $set: lastIndex + 1 });
   console.log(`${result.matchedCount} document(s) matched the query criteria.`);
   console.log(`${result.modifiedCount} document(s) was/were updated.`);
 }
@@ -33,6 +33,7 @@ exports.generateUniqueBarcode = async function () {
   var listOfBarcodes = [];
   let numberOfRequestedBarcodes = await getNumberOfRequestedBarcodes();
   let plateType = await getPlateType();
+  logger.log('plate type is: ' + plateType)
   for (let i = 0; i < numberOfRequestedBarcodes; i++) {
     let uiquePlateBarcode;
     let year = new Date().getFullYear().substring(3, 5);
@@ -44,9 +45,11 @@ exports.generateUniqueBarcode = async function () {
     String(year).padEnd(countOfTraillingZeros, '0');
     uniquePlateBarcode += counter;
     counter += 1;
-    listOfBarcodes.push(uniquePlateBarcode);
+    const barcodsJson = uniquePlateBarcode.toJSON();
+    listOfBarcodes.push(barcodsJson);
   }
   updateLastIndexByNumberOfGeneratedtedBarcodes(client, plateType, counter);
+  return listOfBarcodes;
 };
 
 exports.getCatFact = async function () {

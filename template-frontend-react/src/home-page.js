@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { getBarcode } from './services/barcode';
 import { makeStyles, Button, Paper, Typography } from '@material-ui/core';
 
-import dna from './assets/dna.png';
-
 const useStyles = makeStyles((theme) => ({
   container: {
     height: 'min-content',
@@ -45,14 +43,17 @@ async function getPlateType () {
   document.getElementById("selection").value = myType.options[myType.selectedIndex].text;
 }
 
+async function getPlateBarcode () {
+  getBarcode()
+}
 function HomePage() {
   const classes = useStyles();
 
   return (
     <Paper className={classes.container}>
-      <div class="dropdown">
+      <div className="dropdown">
       <b>Choose Plate Type:</b>
-        <select id="plateTypes" onchange="getPlateType()">
+        <select id="plateTypes" onChange={() => getPlateType()}>
         <option> ---Plate type--- </option>  
         <option value="MSK_DNA">MSK_DNA</option>
         <option value="MSK_RNA">MSK_RNA</option>
@@ -71,8 +72,9 @@ function HomePage() {
         </p>
     </div>
     <div className={classes.Button}>
-      <Button id='plateTypes' onClick={() => getPlateType()} color='primary' variant='contained' type='submit'>Submit Plate Type Selection</Button>
+      {/* <Button id='plateTypes' onClick={() => getPlateType()} color='primary' variant='contained' type='submit'>Submit Plate Type Selection</Button> */}
       <Button id='numOfBarcodes' onClick={() => getNumberOfRequestedBarcodes()} color='secondary' variant='contained' type='submit'>Submit Number of Barcodes </Button>
+      <Button id='generate' onClick={() => getPlateBarcode()} color='primary' variant='contained' type='submit'>Generate </Button>
     </div>
     </Paper>
   );

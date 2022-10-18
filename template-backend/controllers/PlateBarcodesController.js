@@ -1,6 +1,6 @@
 const apiResponse = require('../helpers/apiResponse');
 const { authenticateRequest } = require('../middlewares/jwt-cookie');
-const { generateUniquePlateBarcode, getCatFact } = require('../services/services');
+const { generateUniqueBarcode, getCatFact } = require('../services/services');
 // const Cache = require('../helpers/cache');
 // const ttl = 60 * 60 * 1; // cache for 1 Hour
 // const cache = new Cache(ttl); // Create a new cache service instance
@@ -11,11 +11,11 @@ const { logger } = require('../helpers/winston');
  *
  * @type {*[]}
  */
-exports.generateUniquePlateBarcode = [
+exports.generateUniqueBarcode = [
   authenticateRequest,
   function (req, res) {
     logger.log('info', 'Generating plate barcode');
-    generateUniquePlateBarcode()
+    generateUniqueBarcode()
       .then((barcode) => {
         return apiResponse.successResponseWithData(res, 'success', barcode);
       })
