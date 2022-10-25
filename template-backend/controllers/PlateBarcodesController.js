@@ -25,6 +25,17 @@ exports.generateUniqueBarcode = [
   },
 ];
 
+exports.getNumOfBarcodes = [
+  function (req, res) {
+    if(typeof req.body.count === 'undefined'){
+        // The parameter is missing, example response...
+        res.status(400).json({ error: 'missing parameter count', data: null });
+        return;
+      }
+    return req.body.count;
+    // res.status(200).json({ error: null, data: req.body.count});
+  },
+];
 /**
  * Returns a single quote for the period of the cache, see @ttl
  * @type {*[]}

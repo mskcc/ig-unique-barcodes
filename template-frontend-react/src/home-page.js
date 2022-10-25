@@ -29,14 +29,12 @@ const useStyles = makeStyles((theme) => ({
     },
   },
 }));
- function getSelection() {
 
- }
-
- async function getNumberOfRequestedBarcodes () {
-  var x = document.getElementById("numOfBarcodes").value;
-  document.getElementById("count").innerHTML = x;
-}
+// export.getNumberOfRequestedBarcodes = function() {
+//   var x = document.getElementById("count").value;
+//   document.getElementById("count").innerHTML = x;
+//   return x;
+// };
 
 async function getPlateType () {
   var myType = document.getElementById("plateTypes");
@@ -67,13 +65,15 @@ function HomePage() {
         <p>Your selected plate type is:    
         <input type = "text" id = "selection" size = "15"></input>
         </p>
-        <p>Enter the number of barcodes:    
+        <p>Enter the number of barcodes:</p>
+        <form method="POST" action="/getNumOfBarcodes">    
         <input type = "text" id = "count" size = "5"></input>
-        </p>
+        </form>
+        
     </div>
     <div className={classes.Button}>
       {/* <Button id='plateTypes' onClick={() => getPlateType()} color='primary' variant='contained' type='submit'>Submit Plate Type Selection</Button> */}
-      <Button id='numOfBarcodes' onClick={() => getNumberOfRequestedBarcodes()} color='secondary' variant='contained' type='submit'>Submit Number of Barcodes </Button>
+      {/* <Button id='numOfBarcodes' color='secondary' variant='contained' type='submit'>Submit Count of Barcodes </Button> */}
       <Button id='generate' onClick={() => getPlateBarcode()} color='primary' variant='contained' type='submit'>Generate </Button>
     </div>
     </Paper>
