@@ -28,13 +28,11 @@ async function updateLastIndexByNumberOfGeneratedtedBarcodes(MongoClient, plateT
  * Returns unique barcodes 
  * @returns {Promise<*>}
  */
-exports.generateUniqueBarcode = async function () {
+exports.generateUniqueBarcode = async function (plateType, NumberOfBarcodes) {
   var listOfBarcodes = [];
-  let numberOfRequestedBarcodes = numOfBarcodes;
-  let plateType = await getPlateType();
   logger.log('plate type is: ' + plateType)
-  for (let i = 0; i < numberOfRequestedBarcodes; i++) {
-    let uiquePlateBarcode;
+  for (let i = 0; i < NumberOfBarcodes; i++) {
+    // let uniquePlateBarcode;
     let year = new Date().getFullYear().substring(3, 5);
     // MSK_DNA_2200001
     let counter = await findLastIndexByPlateType(plateType);

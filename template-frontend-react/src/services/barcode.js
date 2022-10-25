@@ -8,8 +8,8 @@ const parseResp = (resp) => {
     return contents;
 };
 
-export function getBarcode() {
-    return axios.get(`${BACKEND}/api/plateBarcode`)
+export function getBarcode(plateType, numOfBarcodes) {
+    return axios.get(`${BACKEND}/api/getBarcode/plateBarcode?plateType=${plateType}&numOfBarcodes=${numOfBarcodes}`)
                 .then(parseResp)
                 .catch(error => {
                     checkForAuthorizationError(error);

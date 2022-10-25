@@ -123,3 +123,7 @@ code {
 .mskcc-white {
 	color: white;
 }
+
+.error {
+	color: #df4602;
+}
