@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { getBarcode } from './services/barcode';
-import { makeStyles, Button, Paper, Typography } from '@material-ui/core';
+import { makeStyles, Button, Paper } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -36,23 +36,35 @@ const useStyles = makeStyles((theme) => ({
 //   return x;
 // };
 
-async function getPlateType () {
-  var myType = document.getElementById("plateTypes");
-  document.getElementById("selection").value = myType.options[myType.selectedIndex].text;
-}
-
-async function getPlateBarcode () {
-  getBarcode()
-}
 function HomePage() {
   const classes = useStyles();
+  const [plateType, setPlateType] = useState('');
+  const [numOfBarcodes, setNumOfBarcodes] = useState(0);
+  const [errorState, setErrorState] = useState('');
+
+  const validate = () => {
+    if (!numOfBarcodes || isNaN(numOfBarcodes)) {
+      setErrorState('Please enter a valid number');
+    } else if (numOfBarcodes < 1) {
+      setErrorState('Please enter a number greater than zero');
+    } else {
+      setErrorState('');
+    }
+  }
+
+  const getPlateBarcode = () => {
+    validate();
+    if (errorState === '') {
+      getBarcode(plateType, numOfBarcodes);
+    }
+  }
 
   return (
     <Paper className={classes.container}>
       <div className="dropdown">
       <b>Choose Plate Type:</b>
-        <select id="plateTypes" onChange={() => getPlateType()}>
-        <option> ---Plate type--- </option>  
+        <select id="plateTypes" onChange={(event) => setPlateType(event.target.value)}>
+        <option value=" "> ---Plate type--- </option>  
         <option value="MSK_DNA">MSK_DNA</option>
         <option value="MSK_RNA">MSK_RNA</option>
         <option value="MSK_cDNA">MSK_cDNA</option>
@@ -62,19 +74,15 @@ function HomePage() {
         <option value="AA">AA</option>
         <option value="MSK_CAP">MSK_CAP</option>
         </select>
-        <p>Your selected plate type is:    
-        <input type = "text" id = "selection" size = "15"></input>
-        </p>
-        <p>Enter the number of barcodes:</p>
-        <form method="POST" action="/getNumOfBarcodes">    
-        <input type = "text" id = "count" size = "5"></input>
-        </form>
-        
+        <p>Your selected plate type is: <b>{plateType}</b></p>
+        <p>Enter the number of barcodes:</p>   
+        <input type = "text" id = "count" size = "5" onChange={(event) => setNumOfBarcodes(event.target.value)}></input>
+        <p className='error'>{errorState}</p>
     </div>
     <div className={classes.Button}>
       {/* <Button id='plateTypes' onClick={() => getPlateType()} color='primary' variant='contained' type='submit'>Submit Plate Type Selection</Button> */}
       {/* <Button id='numOfBarcodes' color='secondary' variant='contained' type='submit'>Submit Count of Barcodes </Button> */}
-      <Button id='generate' onClick={() => getPlateBarcode()} color='primary' variant='contained' type='submit'>Generate </Button>
+      <Button id='generate' onClick={() => getPlateBarcode()} color='primary' variant='contained'>Generate </Button>
     </div>
     </Paper>
   );

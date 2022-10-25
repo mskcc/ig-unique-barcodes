@@ -15,7 +15,9 @@ exports.generateUniqueBarcode = [
   authenticateRequest,
   function (req, res) {
     logger.log('info', 'Generating plate barcode');
-    generateUniqueBarcode()
+    let plateType = req.params.plateType;
+    let numberOfBarcodes = req.params.numOfBarcodes;
+    generateUniqueBarcode(plateType, numberOfBarcodes)
       .then((barcode) => {
         return apiResponse.successResponseWithData(res, 'success', barcode);
       })
