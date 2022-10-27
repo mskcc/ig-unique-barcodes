@@ -12,11 +12,10 @@ const { logger } = require('../helpers/winston');
  * @type {*[]}
  */
 exports.generateUniqueBarcode = [
-  authenticateRequest,
   function (req, res) {
-    logger.log('info', 'Generating plate barcode');
-    let plateType = req.params.plateType;
-    let numberOfBarcodes = req.params.numOfBarcodes;
+    console.log('info', 'Generating plate barcode');
+    let plateType = req.query.plateType;
+    let numberOfBarcodes = req.query.numOfBarcodes;
     generateUniqueBarcode(plateType, numberOfBarcodes)
       .then((barcode) => {
         return apiResponse.successResponseWithData(res, 'success', barcode);
@@ -38,27 +37,6 @@ exports.getNumOfBarcodes = [
     // res.status(200).json({ error: null, data: req.body.count});
   },
 ];
-/**
- * Returns a single quote for the period of the cache, see @ttl
- * @type {*[]}
- */
-// exports.getQuoteOfDay = [
-//   authenticateRequest,
-//   function (req, res) {
-//     // Cache quote for the entire day - no need to query the DB
-//     const key = 'GENERATE_PLATE_BARCODE';
-//     logger.log('info', 'Generating Plate Barcode');
-//     const retrievalFunc = () => getRandomQuote();
-//     return cache
-//       .get(key, retrievalFunc)
-//       .then((quote) => {
-//         return apiResponse.successResponseWithData(res, 'success', quote);
-//       })
-//       .catch((err) => {
-//         return apiResponse.ErrorResponse(res, err.message);
-//       });
-//   },
-// ];
 
 exports.getCatFact = [
   authenticateRequest,

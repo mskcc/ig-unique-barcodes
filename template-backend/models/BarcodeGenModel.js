@@ -4,7 +4,7 @@ var Schema = mongoose.Schema;
 
 var BarcodeSchema = new Schema({
   plateType: {type: String, required: true},
-  countOfBarcodes: {type: String, required: true}
-});
+  counter: {type: String, required: true} //type: Number
+}, { collection : 'plateTypeLastIndex' });
 
-module.exports = mongoose.model('Barcode', BarcodeSchema);
+module.exports = mongoose.model('plateTypeLastIndex', BarcodeSchema);

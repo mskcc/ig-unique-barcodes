@@ -1,28 +1,30 @@
-// const BarcodeGenModel = require('../models/BarcodeGenModel');
-const numOfBarcodes = require('../Controllers/PlateBarcodesController');
+const barcodModel = require('../models/BarcodeGenModel')
+// const numOfBarcodes = require('../Controllers/PlateBarcodesController');
 const axios = require('axios');
-//const client = new MongoClient();
-var MongoClient = require('mongodb').MongoClient;
 const { logger } = require('../helpers/winston');
-MongoClient.connect(process.env.MONGODB_URL);
+var MongoClient = require('mongodb').MongoClient;
+var url = process.env.MONGODB_URL;
 
-async function findLastIndexByPlateType(plateType) {
-  const result = MongoClient.db("plate-barcodes").collection("plateTypeLastIndex")
-                      .findOne({"plateType" : plateType });
-  if (result) {
-      console.log(`Last index found for plate type '${plateType}':`);
-      console.log(result);
-  } else {
-      console.log(`No last index found for the plate type '${plateType}'`);
-  }
-}
+// async function findOne(type) {
 
-async function updateLastIndexByNumberOfGeneratedtedBarcodes(MongoClient, plateType, lastIndex) {
-  const result = MongoClient.db("plate-barcodes").collection("plateTypeLastIndex")
-                      .updateOne({ "plateType" : plateType }, { $set: lastIndex + 1 });
-  console.log(`${result.matchedCount} document(s) matched the query criteria.`);
-  console.log(`${result.modifiedCount} document(s) was/were updated.`);
-}
+//   const client = await MongoClient.connect(url, { useNewUrlParser: true })
+//       .catch(err => { console.log(err); });
+//   if (!client) {
+//       return;
+//   }
+//   try {
+//       const db = client.db("plate-barcodes");
+//       let collection = db.collection('plateTypeLastIndex');
+//       let query = { plateType: type}
+//       const projection = { _id: 0, plateType: 0, counter: 1 };
+//       const res = collection.find(query).project(projection);
+//       await res.forEach(console.dir);
+//   } catch (err) {
+//       console.log(err);
+//   } finally {
+//       client.close();
+//   }
+// }
 
 /**
  * Returns unique barcodes 
@@ -30,23 +32,47 @@ async function updateLastIndexByNumberOfGeneratedtedBarcodes(MongoClient, plateT
  */
 exports.generateUniqueBarcode = async function (plateType, NumberOfBarcodes) {
   var listOfBarcodes = [];
-  logger.log('plate type is: ' + plateType)
+  console.log('plate type is: ' + plateType);
+  var year = new Date().getFullYear().toString().substring(2, 5);
+  console.log('Year is: ' + year);
+  let counter;
+  //MongoClient.connect(url, function (err, db) {
+    //if (err) throw err;
+    //var dbo = db.db("plate-barcodes");
+  console.log('NumberOfBarcodes = ' + NumberOfBarcodes);
+  const query = { "plateType": plateType};
+  const projection = { _id: 0, plateType: 1, counter: 1 };
+  const result = await barcodModel.findOne({plateType: plateType});
+  // dbo.collection("plateTypeLastIndex").findOne({}, function(err, result) {
+  // if (err) throw err;
+  // console.log('result.name ' + result);
+  // // console.log(result)
+  // // console.log('last index of plate type: ' + plateType + ' is = ' + String(result));
+  // // counter = result.counter;
+  // });
+  if (result == null) return;
+  console.log('After find.. Counter = ' + result.counter);
+  counter = result.counter;
   for (let i = 0; i < NumberOfBarcodes; i++) {
-    // let uniquePlateBarcode;
-    let year = new Date().getFullYear().substring(3, 5);
     // MSK_DNA_2200001
-    let counter = await findLastIndexByPlateType(plateType);
-    let counterLength = counter.toString().length;
-    let countOfTraillingZeros = 5 - counterLength;
-    let uniquePlateBarcode = plateType + "_" + year;
-    String(year).padEnd(countOfTraillingZeros, '0');
-    uniquePlateBarcode += counter;
-    counter += 1;
-    const barcodsJson = uniquePlateBarcode.toJSON();
-    listOfBarcodes.push(barcodsJson);
+    console.log('in for loop counter = ' + counter);
+    let countOfTraillingZeros = 5 - String(counter).length;
+    console.log('number or trailing zeros = ' + countOfTraillingZeros)
+    year = year.padEnd(String(year).length + String(countOfTraillingZeros).length, '0');
+    console.log(year);
+    console.log('year after padding to the end: ' + String(year))
+    year = year + counter;
+    console.log('year after concating the counter: ' + year)
+    let uniquePlateBarcode = String(plateType) + "_" + String(year);
+    counter = counter + 1;
+    listOfBarcodes.push(uniquePlateBarcode);
+    console.log('pushed ' + uniquePlateBarcode)
+    barcodModel.updateOne({plateType: plateType},{$inc: { counter: 1 }});
+    console.log('Updated the last index by one')  
   }
-  updateLastIndexByNumberOfGeneratedtedBarcodes(client, plateType, counter);
+  //db.close();
   return listOfBarcodes;
+  //});
 };
 
 exports.getCatFact = async function () {

@@ -19,18 +19,6 @@ export function getBarcode(plateType, numOfBarcodes) {
                 });
 }
 
-// export function getQOD() {
-//     return axios.get(`${BACKEND}/api/quote/qod`)
-//         .then(parseResp)
-//         .catch(error => {
-//             checkForAuthorizationError(error);
-//             // TODO - Replace if building frontend & backend
-//             console.error('Unable to generate barcodes: ' + error.message);
-//             // throw new Error('Unable to generate barcodes: ' + error.message);
-//         });
-// }
-
-
 /**
  * Checks whether the authorization status
  * @param error
