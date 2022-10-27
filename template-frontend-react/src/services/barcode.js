@@ -2,15 +2,14 @@ import axios from 'axios';
 import {BACKEND, LOGIN_SERVICE} from '../configs/config';
 
 const parseResp = (resp) => {
-    const data = resp.data || {};
-    const contents = data.data || {};
+    const data = resp.data || [];
 
-    return contents;
+    return data;
 };
 
 export function getBarcode(plateType, numOfBarcodes) {
     return axios.get(`${BACKEND}/api/getBarcode/plateBarcode?plateType=${plateType}&numOfBarcodes=${numOfBarcodes}`)
-                .then(parseResp)
+                .then(resp => {return parseResp(resp) })
                 .catch(error => {
                     checkForAuthorizationError(error);
                     // TODO - Replace if building frontend & backend

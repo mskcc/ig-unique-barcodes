@@ -9,3 +9,17 @@ body {
   overflow: hidden;
   font-size: 15px;
 }
+
+.barcodeTableRow {
+  text-align: center;
+}
+
+.barcodeTableData {
+  border: 1px solid gray;
+}
+
+.barcodeTable {
+  max-width: 100%;
+  white-space: nowrap;
+  table-layout: auto;
+}

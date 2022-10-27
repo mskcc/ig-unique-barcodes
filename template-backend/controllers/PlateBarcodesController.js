@@ -17,8 +17,12 @@ exports.generateUniqueBarcode = [
     let plateType = req.query.plateType;
     let numberOfBarcodes = req.query.numOfBarcodes;
     generateUniqueBarcode(plateType, numberOfBarcodes)
-      .then((barcode) => {
-        return apiResponse.successResponseWithData(res, 'success', barcode);
+      .then((results) => {
+        if (!results) {
+          return apiResponse.errorResponse(res, `Could not generate barcodes.`);
+        }
+        let [barcodes] = results;
+        return apiResponse.successResponseWithData(res, 'success', barcodes);
       })
       .catch((err) => {
         return apiResponse.ErrorResponse(res, err.message);
