@@ -1,6 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState , useMemo} from 'react';
 import { getBarcode } from './services/barcode';
 import { makeStyles, Button, Paper } from '@material-ui/core';
+import { useTable } from 'react-table';
+import { COLUMNS } from '../components.columns'
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -30,12 +32,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-// export.getNumberOfRequestedBarcodes = function() {
-//   var x = document.getElementById("count").value;
-//   document.getElementById("count").innerHTML = x;
-//   return x;
-// };
-
 function HomePage() {
   const classes = useStyles();
   const [plateType, setPlateType] = useState('');
@@ -58,6 +54,18 @@ function HomePage() {
       getBarcode(plateType, numOfBarcodes);
     }
   }
+  const columns = useMemo(() => COLUMNS, [])
+  //const data = useMemo(() => MOCK_DATA, [])
+  const tableInstance = useTable({
+    columns,
+    //data
+  })
+  const {
+    getTableProps,
+    getTableBodyProps,
+    rows,
+    prepareRow,
+  } = tableInstance
 
   return (
     <Paper className={classes.container}>
@@ -84,6 +92,26 @@ function HomePage() {
       {/* <Button id='numOfBarcodes' color='secondary' variant='contained' type='submit'>Submit Count of Barcodes </Button> */}
       <Button id='generate' onClick={() => getPlateBarcode()} color='primary' variant='contained'>Generate </Button>
     </div>
+    <table {...getTableProps()}>
+      <thead>
+        <tr>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody {...getTableBodyProps()}>
+        {rows.map((row) => {
+          prepareRow(row)
+          return (
+            <tr {...row.getRowProps()}> 
+            {
+            
+            }
+        <td></td>
+      </tr>
+      )
+          })}
+      </tbody>
+      </table>
     </Paper>
   );
 }
