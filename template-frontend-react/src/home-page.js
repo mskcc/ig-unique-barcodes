@@ -1,8 +1,6 @@
 import React, { useState } from 'react';
 import { getBarcode } from './services/barcode';
 import { makeStyles, Button, Paper } from '@material-ui/core';
-// import { useTable } from 'react-table';
-import { COLUMNS } from './components/columns';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -53,24 +51,11 @@ function HomePage() {
     validate();
     if (errorState === '') {
       const barcodesResponse = await getBarcode(plateType, numOfBarcodes);
-      const { barcodes } = barcodesResponse.data;
-      setBarcodeList(barcodes);
-      // MOCK DATA 
-      // setBarcodeList([`${plateType}_1`,`${plateType}_2`,`${plateType}_3`,`${plateType}_4`]);
+      const { data } = barcodesResponse;
+      console.log(data);
+      setBarcodeList(data);
     }
   }
-  // const columns = useMemo(() => COLUMNS, [])
-  //const data = useMemo(() => MOCK_DATA, [])
-  // const tableInstance = useTable({
-  //   columns,
-  //   //data
-  // })
-  // const {
-  //   getTableProps,
-  //   getTableBodyProps,
-  //   rows,
-  //   prepareRow,
-  // } = tableInstance
 
   return (
     <Paper className={classes.container}>
@@ -97,22 +82,27 @@ function HomePage() {
       {/* <Button id='numOfBarcodes' color='secondary' variant='contained' type='submit'>Submit Count of Barcodes </Button> */}
       <Button id='generate' onClick={() => getPlateBarcode()} color='primary' variant='contained'>Generate </Button>
     </div>
-    <table className='barcodeTable'>
+    {barcodeList && barcodeList.length > 0 ? (
+      <table className='barcodeTable'>
       <thead>
         <tr>
           <th>Barcodes</th>
         </tr>
       </thead>
       <tbody>
-        {barcodeList ? barcodeList.map((barcode) => {
+        { barcodeList.map((barcode) => {
           return (
             <tr key={barcode} className={'barcodeTableRow'}>
               <td className={'barcodeTableData'}>{barcode}</td>
             </tr>
           );
-        }) : ''}
-      </tbody>
+        })
+        }
+        </tbody>
     </table>
+    ) : null
+    }
+      
     </Paper>
   );
 }

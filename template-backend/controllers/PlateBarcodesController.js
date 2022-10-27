@@ -21,8 +21,7 @@ exports.generateUniqueBarcode = [
         if (!results) {
           return apiResponse.errorResponse(res, `Could not generate barcodes.`);
         }
-        let [barcodes] = results;
-        return apiResponse.successResponseWithData(res, 'success', barcodes);
+        return apiResponse.successResponseWithData(res, 'success', results);
       })
       .catch((err) => {
         return apiResponse.ErrorResponse(res, err.message);
