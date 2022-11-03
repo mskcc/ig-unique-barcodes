@@ -1,4 +1,4 @@
-# template-frontend-vue
+# barcode-frontend-vue
 
 ## Project setup
 ```

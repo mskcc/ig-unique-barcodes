@@ -56,9 +56,15 @@ function HomePage() {
       setBarcodeList(data);
     }
   }
+  const handleKeypress = e => {
+    //it triggers by pressing the enter key
+  if (e.keyCode === 13) {
+    getPlateBarcode();
+  }
+};
 
   return (
-    <Paper className={classes.container}>
+    <Paper style={{maxHeight: 600, overflow: 'auto'}} className={classes.container}>
       <div className="dropdown">
       <b>Choose Plate Type:</b>
         <select id="plateTypes" onChange={(event) => setPlateType(event.target.value)}>
@@ -74,7 +80,7 @@ function HomePage() {
         </select>
         <p>Your selected plate type is: <b>{plateType}</b></p>
         <p>Enter the number of barcodes:</p>   
-        <input type = "text" id = "count" size = "5" onChange={(event) => setNumOfBarcodes(event.target.value)}></input>
+        <input type = "text" id = "count" size = "5" onChange={(event) => setNumOfBarcodes(event.target.value)} onKeyPress={handleKeypress}></input>
         <p className='error'>{errorState}</p>
     </div>
     <div className={classes.Button}>

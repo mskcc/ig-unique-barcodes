@@ -10,7 +10,7 @@
 ## QuickStart
 ### I) Frontend 
 ```
-$ cd ./template-frontend-react && npm install && npm run start # cd ./template-frontend-vue
+$ cd ./barcode-frontend-react && npm install && npm run start # cd ./barcode-frontend-vue
 ```
 ### II) Mongo
 ```
@@ -18,6 +18,6 @@ $ mongod
 ```
 ### III) Backend
 ```
-$ cd ./template-backend && npm install && npm run dev
+$ cd ./barcode-backend && npm install && npm run dev
 ```
 ### III) Deployment

@@ -33,8 +33,6 @@ exports.generateUniqueBarcode = async function (plateType, NumberOfBarcodes) {
   console.log('Year is: ' + year);
   let counter;
   console.log('NumberOfBarcodes = ' + NumberOfBarcodes);
-  const query = { "plateType": plateType};
-  const projection = { _id: 0, plateType: 1, counter: 1 };
   const result = await barcodModel.findOne({plateType: plateType});
   if (result == null) return;
   console.log('After find.. Counter = ' + result.counter);
@@ -58,7 +56,7 @@ exports.generateUniqueBarcode = async function (plateType, NumberOfBarcodes) {
     let uniquePlateBarcode = String(plateType) + "_" + String(year) + newCounter;
     listOfBarcodes.push(uniquePlateBarcode);
     console.log('pushed ' + uniquePlateBarcode);
-    barcodModel.findOneAndUpdate({plateType: plateType},{$set: { counter: newCounter }});
+    await barcodModel.findOneAndUpdate({plateType: plateType},{$set: { counter: newCounter }});
     console.log('Updated the last index by one')  
   }
   return listOfBarcodes;
