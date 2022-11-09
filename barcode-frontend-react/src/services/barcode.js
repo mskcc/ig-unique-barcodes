@@ -9,7 +9,7 @@ const parseResp = (resp) => {
 
 export function getBarcode(plateType, numOfBarcodes) {
     return axios.get(`${BACKEND}/api/getBarcode/plateBarcode?plateType=${plateType}&numOfBarcodes=${numOfBarcodes}`)
-                .then(resp => {return parseResp(resp) })
+                .then(resp => {return parseResp(resp); })
                 .catch(error => {
                     checkForAuthorizationError(error);
                     // TODO - Replace if building frontend & backend

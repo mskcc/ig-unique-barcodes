@@ -45,7 +45,7 @@ function HomePage() {
     } else {
       setErrorState('');
     }
-  }
+  };
 
   const getPlateBarcode = async () => {
     validate();
@@ -55,13 +55,7 @@ function HomePage() {
       console.log(data);
       setBarcodeList(data);
     }
-  }
-  const handleKeypress = e => {
-    //it triggers by pressing the enter key
-  if (e.keyCode === 13) {
-    getPlateBarcode();
-  }
-};
+  };
 
   return (
     <Paper style={{maxHeight: 600, overflow: 'auto'}} className={classes.container}>
@@ -80,7 +74,7 @@ function HomePage() {
         </select>
         <p>Your selected plate type is: <b>{plateType}</b></p>
         <p>Enter the number of barcodes:</p>   
-        <input type = "text" id = "count" size = "5" onChange={(event) => setNumOfBarcodes(event.target.value)} onKeyPress={handleKeypress}></input>
+        <input type = "text" id = "count" size = "5" onChange={(event) => setNumOfBarcodes(event.target.value)}></input>
         <p className='error'>{errorState}</p>
     </div>
     <div className={classes.Button}>
