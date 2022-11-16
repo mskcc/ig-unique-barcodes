@@ -5,7 +5,6 @@ const cookieParser = require('cookie-parser');
 require('dotenv').config();
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
-const apiResponse = require('./helpers/apiResponse');
 const cors = require('cors');
 
 // DB connection
@@ -33,6 +32,8 @@ mongoose
 
 var port = process.env.PORT || 3222;
 const hostname = '127.0.0.1';
+
+var publicDir = path.join(__dirname, 'public');
 
 const app = express();
 
