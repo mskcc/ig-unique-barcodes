@@ -1,4 +1,5 @@
 const express = require('express');
+const http = require('http');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 require('dotenv').config();
@@ -30,6 +31,9 @@ mongoose
 // const {populateDB} = require('./models/setup_deleteMe');
 // populateDB();
 
+var port = process.env.PORT || 3222;
+const hostname = '127.0.0.1';
+
 const app = express();
 
 app.use(express.json());
@@ -47,17 +51,22 @@ app.use(cors(corsConfig));
 
 //Route Prefixes
 app.use('/api/', apiRouter);
-app.use('/', indexRouter);
-
-// throw 404 if URL not found
-app.all('*', function (req, res) {
-  return apiResponse.notFoundResponse(res, 'Page not found');
+app.get('/', function (req, res) {
+  res.sendFile(path.join(publicDir, 'index.html'));
 });
 
-app.use((err, req, res) => {
-  if (err.name == 'UnauthorizedError') {
-    return apiResponse.unauthorizedResponse(res, err.message);
-  }
+app.get('/favicon.ico', function (req, res) {
+  res.sendFile(path.join(publicDir, 'favicon.ico'));
 });
 
-module.exports = app;
+app.use('*', function (req, res) {
+  res.sendFile(path.join(publicDir, 'index.html'));
+  // return apiResponse.notFoundResponse(res, 'Page not found');
+});
+
+const server = http.createServer(app);
+server.listen(port, hostname, () => {
+  console.log(`Server running at http://${hostname}:${port}/`);
+});
+
+module.exports = server;
