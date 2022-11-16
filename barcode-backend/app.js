@@ -7,9 +7,6 @@ const apiRouter = require('./routes/api');
 const apiResponse = require('./helpers/apiResponse');
 const cors = require('cors');
 
-const jwtInCookie = require('jwt-in-cookie');
-jwtInCookie.configure({ secret: process.env.JWT_SECRET });
-
 // DB connection
 const MONGODB_URL = process.env.MONGODB_URL;
 const mongoose = require('mongoose');

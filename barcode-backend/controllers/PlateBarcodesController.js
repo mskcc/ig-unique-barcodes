@@ -1,5 +1,4 @@
 const apiResponse = require('../helpers/apiResponse');
-const { authenticateRequest } = require('../middlewares/jwt-cookie');
 const { generateUniqueBarcode, getCatFact } = require('../services/services');
 // const Cache = require('../helpers/cache');
 // const ttl = 60 * 60 * 1; // cache for 1 Hour
@@ -42,7 +41,6 @@ exports.getNumOfBarcodes = [
 ];
 
 exports.getCatFact = [
-  authenticateRequest,
   function (req, res) {
     getCatFact()
       .then((fact) => {
