@@ -17,53 +17,15 @@ exports.generateUniqueBarcode = [
     let plateType = req.query.plateType;
     let numberOfBarcodes = req.query.numOfBarcodes;
 
-    let listOfBarcodes = [];
-    console.log('plate type is: ' + plateType);
-    let year = new Date().getFullYear().toString().substring(2, 5);
-    console.log('Year is: ' + year);
-    let counter;
-    console.log('NumberOfBarcodes = ' + numberOfBarcodes);
-
-    let barcodeGeneratePromise = barcodeModel.findOne({plateType: plateType});
-    // generateUniqueBarcode(plateType, numberOfBarcodes)
-    Promise.all([barcodeGeneratePromise])
+    // let barcodeGeneratePromise = barcodeModel.findOne({plateType: plateType});
+    generateUniqueBarcode(plateType, numberOfBarcodes)
+    // Promise.all([barcodeGeneratePromise])
       .then((results) => {
         console.log(results);
-        const result = results[0];
-        // no barcodes for plateType yet
-        if (result === null) {
-          counter = 0;
-        } else {
-          console.log('After find.. Counter = ' + result.counter);
-          counter = result.counter;
+        if (!results) {
+          return apiResponse.errorResponse(res, `Could not generate barcodes.`);
         }
-        let padded = false;
-        let prevCountOfTraillingZeros = 0;
-        for (let i = 0; i < numberOfBarcodes; i++) {
-          // MSK_DNA_2200001
-          console.log('in for loop counter = ' + counter);
-          newCounter = parseInt(counter) + 1;
-          counter = newCounter;
-          console.log('newCounter = ' + newCounter);
-          let countOfTraillingZeros = 5 - String(newCounter).length;
-          console.log('number or trailing zeros = ' + countOfTraillingZeros);
-          if (!padded && countOfTraillingZeros !== prevCountOfTraillingZeros) {
-            year = year.padEnd(String(year).length + countOfTraillingZeros, '0');
-            prevCountOfTraillingZeros = countOfTraillingZeros;
-            padded = true;
-            console.log('year after padding to the end: ' + String(year))
-          }
-          let uniquePlateBarcode = String(plateType) + "_" + String(year) + newCounter;
-          listOfBarcodes.push(uniquePlateBarcode);
-          console.log('pushed ' + uniquePlateBarcode);
-          barcodeModel.findOneAndUpdate({plateType: plateType},{$set: { counter: newCounter }});
-          console.log('Updated the last index by one')
-        }
-
-        // if (!results) {
-        //   return apiResponse.errorResponse(res, `Could not generate barcodes.`);
-        // }
-        return apiResponse.successResponseWithData(res, 'success', listOfBarcodes);
+        return apiResponse.successResponseWithData(res, 'success', results);
       })
       .catch((err) => {
         return apiResponse.errorResponse(res, err.message);
