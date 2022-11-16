@@ -28,9 +28,15 @@ exports.generateUniqueBarcode = [
     // generateUniqueBarcode(plateType, numberOfBarcodes)
     Promise.all([barcodeGeneratePromise])
       .then((results) => {
+        console.log(results);
         const result = results[0];
-        console.log('After find.. Counter = ' + result.counter);
-        counter = result.counter;
+        // no barcodes for plateType yet
+        if (result === null) {
+          counter = 0;
+        } else {
+          console.log('After find.. Counter = ' + result.counter);
+          counter = result.counter;
+        }
         let padded = false;
         let prevCountOfTraillingZeros = 0;
         for (let i = 0; i < numberOfBarcodes; i++) {
@@ -41,7 +47,7 @@ exports.generateUniqueBarcode = [
           console.log('newCounter = ' + newCounter);
           let countOfTraillingZeros = 5 - String(newCounter).length;
           console.log('number or trailing zeros = ' + countOfTraillingZeros);
-          if (!padded && countOfTraillingZeros != prevCountOfTraillingZeros) {
+          if (!padded && countOfTraillingZeros !== prevCountOfTraillingZeros) {
             year = year.padEnd(String(year).length + countOfTraillingZeros, '0');
             prevCountOfTraillingZeros = countOfTraillingZeros;
             padded = true;
