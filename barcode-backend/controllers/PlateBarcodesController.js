@@ -23,7 +23,7 @@ exports.generateUniqueBarcode = [
         return apiResponse.successResponseWithData(res, 'success', results);
       })
       .catch((err) => {
-        return apiResponse.ErrorResponse(res, err.message);
+        return apiResponse.errorResponse(res, err.message);
       });
   },
 ];
@@ -49,7 +49,7 @@ exports.getCatFact = [
       })
       .catch((response) => {
         console.log('error');
-        return apiResponse.ErrorResponse(res, 'no cat facts');
+        return apiResponse.errorResponse(res, 'no cat facts');
       });
   },
 ];

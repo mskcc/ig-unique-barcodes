@@ -12,7 +12,7 @@ export function getBarcode(plateType, numOfBarcodes) {
                 .then(resp => {return parseResp(resp); })
                 .catch(error => {
                     // TODO - Replace if building frontend & backend
-                    console.error(`${resp} Unable to generate barcodes: ${error}`);
+                    console.error(`Unable to generate barcodes: ${error}`);
                     // throw new Error('Unable to generate barcodes: ' + error.message);
                 });
 }
