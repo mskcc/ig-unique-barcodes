@@ -34,7 +34,6 @@ exports.generateUniqueBarcode = async function (plateType, NumberOfBarcodes) {
   let counter;
   console.log('NumberOfBarcodes = ' + NumberOfBarcodes);
   const result = await barcodModel.findOne({plateType: plateType});
-  if (result == null) return;
   console.log('After find.. Counter = ' + result.counter);
   counter = result.counter;
   let padded = false;
