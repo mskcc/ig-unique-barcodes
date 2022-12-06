@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { getBarcode } from './services/barcode';
+import { getBarcode, exportExcel} from './services/barcode';
+//import { exportExcel } from './util/excel';
 import { makeStyles, Button, Paper } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -57,6 +58,10 @@ function HomePage() {
     }
   };
 
+  const handleExport = () => {
+    exportExcel(barcodeList);
+  };
+
   return (
     <Paper style={{maxHeight: 600, overflow: 'auto'}} className={classes.container}>
       <div className="dropdown">
@@ -78,9 +83,8 @@ function HomePage() {
         <p className='error'>{errorState}</p>
     </div>
     <div className={classes.Button}>
-      {/* <Button id='plateTypes' onClick={() => getPlateType()} color='primary' variant='contained' type='submit'>Submit Plate Type Selection</Button> */}
-      {/* <Button id='numOfBarcodes' color='secondary' variant='contained' type='submit'>Submit Count of Barcodes </Button> */}
-      <Button id='generate' onClick={() => getPlateBarcode()} color='primary' variant='contained'>Generate </Button>
+      <Button id='generate' onClick={() => getPlateBarcode()} color='primary' variant='contained'> Generate </Button>
+      <Button id='gridExport' onClick={handleExport} color='primary' variant='contained' type='submit'> Export Excel </Button>
     </div>
     {barcodeList && barcodeList.length > 0 ? (
       <table className='barcodeTable'>

@@ -2,26 +2,6 @@ const barcodModel = require('../models/BarcodeGenModel')
 const axios = require('axios');
 const { logger } = require('../helpers/winston');
 
-// async function findOne(type) {
-
-//   const client = await MongoClient.connect(url, { useNewUrlParser: true })
-//       .catch(err => { console.log(err); });
-//   if (!client) {
-//       return;
-//   }
-//   try {
-//       const db = client.db("plate-barcodes");
-//       let collection = db.collection('plateTypeLastIndex');
-//       let query = { plateType: type}
-//       const projection = { _id: 0, plateType: 0, counter: 1 };
-//       const res = collection.find(query).project(projection);
-//       await res.forEach(console.dir);
-//   } catch (err) {
-//       console.log(err);
-//   } finally {
-//       client.close();
-//   }
-// }
 /**
  * Returns unique barcodes 
  * @returns {Promise<*>}

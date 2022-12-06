@@ -1,9 +1,6 @@
 const apiResponse = require('../helpers/apiResponse');
 const { authenticateRequest } = require('../middlewares/jwt-cookie');
 const { generateUniqueBarcode, getCatFact } = require('../services/services');
-// const Cache = require('../helpers/cache');
-// const ttl = 60 * 60 * 1; // cache for 1 Hour
-// const cache = new Cache(ttl); // Create a new cache service instance
 const { logger } = require('../helpers/winston');
 
 /**
@@ -27,6 +24,23 @@ exports.generateUniqueBarcode = [
         return apiResponse.ErrorResponse(res, err.message);
       });
   },
+];
+
+exports.exportExcel = [
+  function (req, res) {
+    console.log('info', 'Exporting barcode into excel');
+    let barcodeList = req.query.barcodeList;
+    exportExcel(barcodeList)
+      .then((results) => {
+        if (!results) {
+          return apiResponse.errorResponse(res, 'Unble to export to excel.');
+        }
+        return apiResponse.successResponseWithData(res, 'success', results);
+      })
+      .catch((err) => {
+        return apiResponse.ErrorResponse(res, err.message);
+      });
+    },
 ];
 
 exports.getNumOfBarcodes = [
