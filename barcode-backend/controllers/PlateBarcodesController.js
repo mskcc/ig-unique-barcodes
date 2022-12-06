@@ -1,5 +1,5 @@
 const apiResponse = require('../helpers/apiResponse');
-const { authenticateRequest } = require('../middlewares/jwt-cookie');
+const barcodeModel = require('../models/BarcodeGenModel');
 const { generateUniqueBarcode, getCatFact } = require('../services/services');
 const { logger } = require('../helpers/winston');
 
@@ -13,15 +13,19 @@ exports.generateUniqueBarcode = [
     console.log('info', 'Generating plate barcode');
     let plateType = req.query.plateType;
     let numberOfBarcodes = req.query.numOfBarcodes;
+
+    // let barcodeGeneratePromise = barcodeModel.findOne({plateType: plateType});
     generateUniqueBarcode(plateType, numberOfBarcodes)
+    // Promise.all([barcodeGeneratePromise])
       .then((results) => {
+        console.log(results);
         if (!results) {
           return apiResponse.errorResponse(res, `Could not generate barcodes.`);
         }
         return apiResponse.successResponseWithData(res, 'success', results);
       })
       .catch((err) => {
-        return apiResponse.ErrorResponse(res, err.message);
+        return apiResponse.errorResponse(res, err.message);
       });
   },
 ];
@@ -56,7 +60,6 @@ exports.getNumOfBarcodes = [
 ];
 
 exports.getCatFact = [
-  authenticateRequest,
   function (req, res) {
     getCatFact()
       .then((fact) => {
@@ -65,7 +68,7 @@ exports.getCatFact = [
       })
       .catch((response) => {
         console.log('error');
-        return apiResponse.ErrorResponse(res, 'no cat facts');
+        return apiResponse.errorResponse(res, 'no cat facts');
       });
   },
 ];

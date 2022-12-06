@@ -26,7 +26,7 @@ exports.AuthenticationErrorResponse = function(res, msg) {
   return res.status(401).json(data);
 };
 
-exports.ErrorResponse = function (res, msg) {
+exports.errorResponse = function (res, msg) {
   var data = {
     status: 0,
     message: msg,
