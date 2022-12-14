@@ -70,4 +70,4 @@ server.listen(port, hostname, () => {
   console.log(`Server running at http://${hostname}:${port}/`);
 });
 
-module.exports = server;
+module.exports = app;
