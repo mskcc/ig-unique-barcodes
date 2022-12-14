@@ -15,13 +15,13 @@ export function getBarcode(plateType, numOfBarcodes) {
                     console.error(`Unable to generate barcodes: ${error}`);
                     // throw new Error('Unable to generate barcodes: ' + error.message);
                 });
-}
-export function exportExcel(barcodeList) {
-    return axios.get(`${BACKEND}/api/exportExcel/columns=${barcodeList}`)
-                .then(resp => {return parseResp(resp); })
-                .catch(error => {
-                    // TODO - Replace if building frontend & backend
-                    console.error('Unable to export to excel: ' + error.message);
-                    // throw new Error('Unable to generate barcodes: ' + error.message);
-                });
-}
+};
+// export function exportExcel(barcodeList) {
+//     return axios.get(`${BACKEND}/api/exportExcel/columns=${barcodeList}`)
+//                 .then(resp => {return parseResp(resp); })
+//                 .catch(error => {
+//                     // TODO - Replace if building frontend & backend
+//                     console.error('Unable to export to excel: ' + error.message);
+//                     // throw new Error('Unable to generate barcodes: ' + error.message);
+//                 });
+// };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import { getBarcode, exportExcel} from './services/barcode';
-//import { exportExcel } from './util/excel';
+import { getBarcode } from './services/barcode';
+import { exportExcel } from './util/excel';
 import { makeStyles, Button, Paper } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -36,7 +36,9 @@ function HomePage() {
   const [plateType, setPlateType] = useState('');
   const [numOfBarcodes, setNumOfBarcodes] = useState(0);
   const [errorState, setErrorState] = useState('');
-  const [barcodeList, setBarcodeList] = useState([]);
+  const [barcodeList, setBarcodeList] = useState({
+    barcodeList : [],
+  });
 
   const validate = () => {
     if (!numOfBarcodes || isNaN(numOfBarcodes)) {
@@ -59,7 +61,7 @@ function HomePage() {
   };
 
   const handleExport = () => {
-    exportExcel(barcodeList);
+    exportExcel(barcodeList, plateType);
   };
 
   return (
@@ -84,13 +86,13 @@ function HomePage() {
     </div>
     <div className={classes.Button}>
       <Button id='generate' onClick={() => getPlateBarcode()} color='primary' variant='contained'> Generate </Button>
-      <Button id='gridExport' onClick={handleExport} color='primary' variant='contained' type='submit'> Export Excel </Button>
+      <Button id='gridExport' onClick={handleExport} color='secondary' variant='contained' type='submit'> Export Excel </Button>
     </div>
     {barcodeList && barcodeList.length > 0 ? (
       <table className='barcodeTable'>
       <thead>
         <tr>
-          <th>Barcodes</th>
+          <th>Generated Barcodes</th>
         </tr>
       </thead>
       <tbody>

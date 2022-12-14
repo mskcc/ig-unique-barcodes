@@ -1,7 +1,7 @@
 import FileSaver from 'file-saver';
 import Excel from 'exceljs';
 
-export const exportExcel = (columns) => {
+export const exportExcel = (barcodeData, plateType) => {
     let workbook = new Excel.Workbook();
   
     var today = new Date();
@@ -10,7 +10,7 @@ export const exportExcel = (columns) => {
     var yyyy = today.getFullYear();
   
     today = mm + '-' + dd + '-' + yyyy;
-    let fileName = `IGO-Unique-Barcodes-${today}`;
+    let fileName = `IGO-Unique-Barcodes-${plateType}-${today}`;
     workbook.creator = 'IGO';
     workbook.lastModifiedBy = 'IGO';
     workbook.created = new Date();
@@ -21,15 +21,16 @@ export const exportExcel = (columns) => {
   
     let sheetColumns = [];
     // add columns first to be able to reference them by key during formatting step
-    columns.forEach((columnDef) => {
+    barcodeData.forEach((columnDef) => {
       sheetColumns.push({
-        //header: columnDef.columnHeader,
+        header: columnDef.columnHeader,
         key: columnDef.data,
         width: 20,
       });
+      console.log("columnDef.data = " + columnDef.data);
     });
     uniqueBarcodes.columns = sheetColumns;
-    let headerRow = "Generated Barcodes";
+    let headerRow = uniqueBarcodes.getRow(1);
     headerRow.alignment = {
       vertical: 'middle',
       horizontal: 'center',
@@ -37,21 +38,20 @@ export const exportExcel = (columns) => {
     };
     headerRow.height = 20;
     headerRow.font = { bold: true };
-    // FILL
-    columns.forEach((columnDef) => {
+    uniqueBarcodes.addRows(barcodeData);
+
+    barcodeData.forEach((columnDef) => {
       // ADD EXISTING VALUES
       //  need to do this in the column loop because adding dataValidation to a cell creates new rows
-      for (let i = 0; i < columns.length; i++) {
-        let cell = uniqueBarcodes.getRow(i).getCell(`${columnDef.data}`);
-        columns[i] && console.log(columns[i][columnDef.data]);
-        if (columns[i]) {
-          cell.value = columns[i][columnDef.data];
-          // if (columnDef.type === 'numeric' && cell.value !== '') {
-          //   cell.value = parseFloat(cell.value);
-          // }
+      console.log("barcodeData.length = " + barcodeData.length);
+      for (let i = 0; i < barcodeData.length + 2; i++) {
+        let cell = uniqueBarcodes.getRow(i+2).getCell(1);
+        if (barcodeData[i]) {
+          cell.value = barcodeData[i][1];
         } else {
           cell.value = '';
         }
+        console.log(cell);
       }
     });
     workbook.xlsx.writeBuffer().then(function (data) {
