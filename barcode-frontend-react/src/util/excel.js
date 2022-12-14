@@ -16,44 +16,28 @@ export const exportExcel = (barcodeData, plateType) => {
     workbook.created = new Date();
     workbook.modified = new Date();
     workbook.lastPrinted = new Date();
-  
     let uniqueBarcodes = workbook.addWorksheet('UniquePlateBarcodes');
-  
-    let sheetColumns = [];
-    // add columns first to be able to reference them by key during formatting step
-    barcodeData.forEach((columnDef) => {
-      sheetColumns.push({
-        header: columnDef.columnHeader,
-        key: columnDef.data,
-        width: 20,
-      });
-      console.log("columnDef.data = " + columnDef.data);
-    });
-    uniqueBarcodes.columns = sheetColumns;
-    let headerRow = uniqueBarcodes.getRow(1);
-    headerRow.alignment = {
+
+    console.log("barcodeData.length = " + barcodeData.length);
+    let header = uniqueBarcodes.getRow(1).getCell(1);
+    header.alignment = {
       vertical: 'middle',
       horizontal: 'center',
       wrapText: true,
     };
-    headerRow.height = 20;
-    headerRow.font = { bold: true };
-    uniqueBarcodes.addRows(barcodeData);
-
-    barcodeData.forEach((columnDef) => {
-      // ADD EXISTING VALUES
-      //  need to do this in the column loop because adding dataValidation to a cell creates new rows
-      console.log("barcodeData.length = " + barcodeData.length);
-      for (let i = 0; i < barcodeData.length + 2; i++) {
-        let cell = uniqueBarcodes.getRow(i+2).getCell(1);
-        if (barcodeData[i]) {
-          cell.value = barcodeData[i][1];
-        } else {
-          cell.value = '';
-        }
-        console.log(cell);
+    header.value = "Generated Barcodes";
+    header.font = { bold: true };
+    header.width = 25;
+    header.height = 20;
+    for (let i = 0; i < barcodeData.length + 2; i++) {
+      let cell = uniqueBarcodes.getRow(i+2).getCell(1);
+      if (barcodeData[i]) {
+        cell.value = barcodeData[i];
+      } else {
+        cell.value = '';
       }
-    });
+    }
+
     workbook.xlsx.writeBuffer().then(function (data) {
       var blob = new Blob([data], {
         type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
