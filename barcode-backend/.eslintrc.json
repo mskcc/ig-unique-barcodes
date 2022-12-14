@@ -5,10 +5,9 @@
     "node": true,
     "mocha": true
   },
-  "extends": [
-    "eslint:recommended",
-    "plugin:node/recommended"
-  ],
+  "extends": ["airbnb", "prettier", "prettier/react"],
+  "plugins": ["prettier"],
+  "parser": ["react-scripts/node_modules/babel-eslint"],
   "rules": {
     "indent": [
       "error",
