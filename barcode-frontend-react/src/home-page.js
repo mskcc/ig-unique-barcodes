@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { getBarcode } from './services/barcode';
-import { exportExcel } from './util/excel';
+import { exportCSV } from './util/excel';
 import { makeStyles, Button, Paper } from '@material-ui/core';
 
 const useStyles = makeStyles((theme) => ({
@@ -61,7 +61,7 @@ function HomePage() {
   };
 
   const handleExport = () => {
-    exportExcel(barcodeList, plateType);
+    exportCSV(barcodeList, plateType);
   };
 
   return (
@@ -86,7 +86,7 @@ function HomePage() {
     </div>
     <div className={classes.Button}>
       <Button id='generate' onClick={() => getPlateBarcode()} color='primary' variant='contained'> Generate </Button>
-      <Button id='gridExport' onClick={handleExport} color='secondary' variant='contained' type='submit'> Export Excel </Button>
+      <Button id='gridExport' onClick={handleExport} color='secondary' variant='contained' type='submit'> Export CSV </Button>
     </div>
     {barcodeList && barcodeList.length > 0 ? (
       <table className='barcodeTable'>
