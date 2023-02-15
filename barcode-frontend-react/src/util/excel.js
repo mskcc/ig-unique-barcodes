@@ -56,6 +56,10 @@ export const exportCSV = (barcodeData, plateType) => {
             fileData: csvContent,
           })
           .then((resp) => {
+              console.log(resp);
+              if (resp.status === 1) {
+                alert('CSV file successfully exported to "//skimcs/MohibullahLab/Sample and Project Management/PlateBarcodePrinterFile/IGO-Unique-barcodes.csv"');
+              }
               return resp;
           })
           .catch((error) => {
