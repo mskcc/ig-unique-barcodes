@@ -37,7 +37,7 @@ exports.writeToFile = [
     let file = req.body.fileName;
     let content = req.body.fileData;
 
-      fs.writeFile(`/prep/mohibullahlab/IGO-Unique-barcodes.csv`, content, (err) => {
+      fs.writeFile(`/mnt/mohibullahlab/Sample and Project Management/PlateBarcodePrinterFile/IGO-Unique-barcodes.csv`, content, (err) => {
         if (err) {
           return apiResponse.errorResponse(res, `Could not write to CSV file. ${err}`);
         } else {
