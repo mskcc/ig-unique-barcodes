@@ -1,5 +1,7 @@
 // import FileSaver from 'file-saver';
 // import Excel from 'exceljs';
+import axios from 'axios';
+import {BACKEND} from '../configs/config';
 
 export const exportCSV = (barcodeData, plateType) => {
     var today = new Date();
@@ -9,17 +11,16 @@ export const exportCSV = (barcodeData, plateType) => {
     
   
     today = mm + '-' + dd + '-' + yyyy;
-    //let fileName = `IGO-Unique-Barcodes-${plateType}-${today}`;
+    // let fileName = `IGO-Unique-Barcodes-${plateType}-${today}.csv`;
     let fileName = 'IGO-Unique-barcodes.csv';
-    const filePath =  'smb://skimcs/MohibullahLab/Sample and Project Management/PlateBarcodePrinterFile/IGO-Unique-barcodes.csv';
+    const filePath =  `smb://skimcs/MohibullahLab/Sample and Project Management/PlateBarcodePrinterFile/${fileName}`;
 
-    //let csvContent = "data:text/csv;charset=utf-8,";
+    // let csvContent = "data:text/csv;charset=utf-8,";
     let csvContent = "";
     barcodeData.forEach(function(rowArray) {
         let row = rowArray + ",";
         csvContent += row + "\r\n";
     });
-    //fs.writeFile(filePath, csvContent);
   //   var client = require('scp2');
   //   client.scp('IGO-Unique-barcodes.csv', {
   //     host: 'example.com',
@@ -32,6 +33,7 @@ export const exportCSV = (barcodeData, plateType) => {
     //   type: "csv"
     // });
     var encodedUri = encodeURI(filePath);
+    // window.open(encodedUri);
     var link = document.createElement("a");
     
     // var url = new URL(filePath);
@@ -43,10 +45,26 @@ export const exportCSV = (barcodeData, plateType) => {
     link.setAttribute("target", csvContent);
     link.setAttribute("download", fileName);
     document.body.appendChild(link);
-    // const fs = require('fs');
     // fs.writeFile("IGO-Unique-barcodes.csv", csvContent);
     link.click(); // Downloads the file
     //document.body.removeChild(link);
+
+      const url = `${BACKEND}/api/getBarcode/writeToFile`;
+      return axios
+          .post(url, {
+            fileName: filePath,
+            fileData: csvContent,
+          })
+          .then((resp) => {
+              return resp;
+          })
+          .catch((error) => {
+              throw error;
+          })
+          .then((resp) => {
+              return resp;
+          });
+
   };
 
   /** Below is a working code for export xlsx */

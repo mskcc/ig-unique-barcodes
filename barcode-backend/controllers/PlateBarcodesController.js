@@ -2,6 +2,7 @@ const apiResponse = require('../helpers/apiResponse');
 const barcodeModel = require('../models/BarcodeGenModel');
 const { generateUniqueBarcode, getCatFact } = require('../services/services');
 const { logger } = require('../helpers/winston');
+const fs = require('fs');
 
 /**
  * Returns a unique plate barcode
@@ -28,6 +29,20 @@ exports.generateUniqueBarcode = [
         return apiResponse.errorResponse(res, err.message);
       });
   },
+];
+
+exports.writeToFile = [
+  function (req, res) {
+    console.log('info', 'Writing CSV File');
+    let file = req.body.fileName;
+    let content = req.body.fileData;
+
+      fs.writeFile(`/prep/mohibullahlab/IGO-Unique-barcodes.csv`, content, (err) => {
+        if (err) {
+          return apiResponse.errorResponse(res, `Could not write to CSV file. ${err}`);
+        }
+      });
+  }
 ];
 
 exports.getNumOfBarcodes = [
