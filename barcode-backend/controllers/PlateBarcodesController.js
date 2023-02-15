@@ -40,6 +40,8 @@ exports.writeToFile = [
       fs.writeFile(`/prep/mohibullahlab/IGO-Unique-barcodes.csv`, content, (err) => {
         if (err) {
           return apiResponse.errorResponse(res, `Could not write to CSV file. ${err}`);
+        } else {
+          return apiResponse.successResponse(res, 'Successfully exported file');
         }
       });
   }
