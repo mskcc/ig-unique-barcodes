@@ -37,11 +37,11 @@ exports.writeToFile = [
     let file = req.body.fileName;
     let content = req.body.fileData;
 
-      fs.access('/mnt/mohibullahlab/Sample and Project Management/IGO-Unique-barcodes.csv', (err) => {
-        console.log(`${err ? 'does not exist' : 'exists'}`);
+      fs.access('/mnt/mohibullahlab/Sample and Project Management/PlateBarcodePrinterFile/IGO-Unique-barcodes.csv', (err) => {
+        console.log(`${err ? `does not exist ${err}` : 'exists'}`);
       });
 
-      fs.writeFile(`/mnt/mohibullahlab/Sample and Project Management/IGO-Unique-barcodes.csv`, content, (err) => {
+      fs.writeFile(`/mnt/mohibullahlab/Sample and Project Management/PlateBarcodePrinterFile/IGO-Unique-barcodes.csv`, content, (err) => {
         if (err) {
           return apiResponse.errorResponse(res, `Could not write to CSV file. ${err}`);
         } else {
