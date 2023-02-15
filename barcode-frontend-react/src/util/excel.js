@@ -13,7 +13,7 @@ export const exportCSV = (barcodeData, plateType) => {
     today = mm + '-' + dd + '-' + yyyy;
     // let fileName = `IGO-Unique-Barcodes-${plateType}-${today}.csv`;
     let fileName = 'IGO-Unique-barcodes.csv';
-    const filePath =  `smb://skimcs/MohibullahLab/Sample and Project Management/PlateBarcodePrinterFile/${fileName}`;
+    const filePath =  `/mnt/mohibullahlab/Sample and Project Management/PlateBarcodePrinterFile/${fileName}`;
 
     // let csvContent = "data:text/csv;charset=utf-8,";
     let csvContent = "";
@@ -41,12 +41,12 @@ export const exportCSV = (barcodeData, plateType) => {
     // link.download = encodedUri;
     // link.style.display = "none";
 
-    link.setAttribute("href", filePath);
-    link.setAttribute("target", csvContent);
-    link.setAttribute("download", fileName);
-    document.body.appendChild(link);
+    // link.setAttribute("href", filePath);
+    // link.setAttribute("target", csvContent);
+    // link.setAttribute("download", fileName);
+    // document.body.appendChild(link);
     // fs.writeFile("IGO-Unique-barcodes.csv", csvContent);
-    link.click(); // Downloads the file
+    // link.click(); // Downloads the file
     //document.body.removeChild(link);
 
       const url = `${BACKEND}/api/getBarcode/writeToFile`;
