@@ -9,35 +9,17 @@ export const exportCSV = (barcodeData, plateType) => {
     
   
     today = mm + '-' + dd + '-' + yyyy;
-    //let fileName = `IGO-Unique-Barcodes-${plateType}-${today}`;
     let fileName = 'IGO-Unique-barcodes.csv';
     const filePath =  'smb://skimcs/MohibullahLab/Sample and Project Management/PlateBarcodePrinterFile/IGO-Unique-barcodes.csv';
 
-    //let csvContent = "data:text/csv;charset=utf-8,";
     let csvContent = "";
     barcodeData.forEach(function(rowArray) {
         let row = rowArray + ",";
         csvContent += row + "\r\n";
     });
-    //fs.writeFile(filePath, csvContent);
-  //   var client = require('scp2');
-  //   client.scp('IGO-Unique-barcodes.csv', {
-  //     host: 'example.com',
-  //     username: 'admin',
-  //     password: 'password',
-  //     path: filePath
-  // }, function(err) {});
-
-    // let CSVFile = new Blob([csvContent], {
-    //   type: "csv"
-    // });
+ 
     var encodedUri = encodeURI(filePath);
     var link = document.createElement("a");
-    
-    // var url = new URL(filePath);
-    // link.href = URL.createObjectURL(CSVFile);
-    // link.download = encodedUri;
-    // link.style.display = "none";
 
     link.setAttribute("href", filePath);
     var fs = require('fs');
@@ -48,8 +30,6 @@ export const exportCSV = (barcodeData, plateType) => {
     document.body.appendChild(link);
     link.click(); // Downloads the file
     document.body.removeChild(link);
-    // 
-    // fs.writeFile("IGO-Unique-barcodes.csv", csvContent);
   };
 
   /** Below is a working code for export xlsx */
