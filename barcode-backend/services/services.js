@@ -21,33 +21,28 @@ exports.generateUniqueBarcode = async function (plateType, NumberOfBarcodes) {
   let prevCountOfTraillingZeros = 0;
   for (let i = 0; i < NumberOfBarcodes; i++) {
     // MSK_DNA_2200001
+    let counterLengthFixed = true;
+    let prevCounterLength = String(counter).length;
     newCounter = parseInt(counter) + 1;
+    let newCounterLength = String(newCounter).length;
+    if (newCounterLength > prevCounterLength) {
+      counterLengthFixed = false;
+    }
     counter = newCounter;
     let countOfTraillingZeros = 5 - String(newCounter).length;
-    if (!padded && countOfTraillingZeros != prevCountOfTraillingZeros) {
-      year = year.padEnd(String(year).length + countOfTraillingZeros, '0');
-      prevCountOfTraillingZeros = countOfTraillingZeros;
+    
+    if (!padded) {
+      year = year.padEnd(String(year).length + countOfTraillingZeros, '0'); //padEnd(targetlength, pad string)
       padded = true;
+    }
+    if (!counterLengthFixed && padded) {
+      year = new Date().getFullYear().toString().substring(2, 5);
+      year = year.padEnd(String(year).length + countOfTraillingZeros, '0');
+      counterLengthFixed = true;
     }
     let uniquePlateBarcode = String(plateType) + "_" + String(year) + newCounter;
     listOfBarcodes.push(uniquePlateBarcode);
     await barcodModel.findOneAndUpdate({plateType: plateType},{$set: { counter: newCounter }}); 
   }
   return listOfBarcodes;
-};
-
-exports.getCatFact = async function () {
-  return axios
-    .get('https://catfact.ninja/fact')
-    .then((response) => {
-      return { fact: response.data.fact };
-    })
-    .catch((error) => {
-      // console.log(error);
-      // return 'Could not retrieve a cat fact';
-      throw error;
-    })
-    .then((response) => {
-      return response;
-    });
 };
