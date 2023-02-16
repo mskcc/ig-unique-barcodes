@@ -1,7 +1,5 @@
 // import FileSaver from 'file-saver';
 // import Excel from 'exceljs';
-import axios from 'axios';
-import {BACKEND} from '../configs/config';
 
 export const exportCSV = (barcodeData, plateType) => {
     var today = new Date();
@@ -9,37 +7,49 @@ export const exportCSV = (barcodeData, plateType) => {
     var mm = String(today.getMonth() + 1).padStart(2, '0');
     var yyyy = today.getFullYear();
     
+  
     today = mm + '-' + dd + '-' + yyyy;
+    //let fileName = `IGO-Unique-Barcodes-${plateType}-${today}`;
     let fileName = 'IGO-Unique-barcodes.csv';
-    const filePath =  `/mnt/mohibullahlab/Sample and Project Management/PlateBarcodePrinterFile/${fileName}`;
+    const filePath =  'smb://skimcs/MohibullahLab/Sample and Project Management/PlateBarcodePrinterFile/IGO-Unique-barcodes.csv';
+
+    //let csvContent = "data:text/csv;charset=utf-8,";
     let csvContent = "";
     barcodeData.forEach(function(rowArray) {
         let row = rowArray + ",";
         csvContent += row + "\r\n";
     });
+    //fs.writeFile(filePath, csvContent);
+  //   var client = require('scp2');
+  //   client.scp('IGO-Unique-barcodes.csv', {
+  //     host: 'example.com',
+  //     username: 'admin',
+  //     password: 'password',
+  //     path: filePath
+  // }, function(err) {});
+
+    // let CSVFile = new Blob([csvContent], {
+    //   type: "csv"
+    // });
     var encodedUri = encodeURI(filePath);
     var link = document.createElement("a");
     
-    const url = `${BACKEND}/api/getBarcode/writeToFile`;
-    return axios
-        .post(url, {
-          fileName: filePath,
-          fileData: csvContent,
-        })
-        .then((resp) => {
-            console.log(resp);
-            if (resp.data.status === 1) {
-              alert('CSV file successfully exported to "//skimcs/MohibullahLab/Sample and Project Management/PlateBarcodePrinterFile/IGO-Unique-barcodes.csv"');
-            }
-            return resp;
-        })
-        .catch((error) => {
-            throw error;
-        })
-        .then((resp) => {
-            return resp;
-        });
+    // var url = new URL(filePath);
+    // link.href = URL.createObjectURL(CSVFile);
+    // link.download = encodedUri;
+    // link.style.display = "none";
 
+    link.setAttribute("href", filePath);
+    var fs = require('fs');
+    fs.open(filePath, 'rs+', function (err, f) {
+      console.log('Saved!');
+    });
+    link.setAttribute("download", csvContent);
+    document.body.appendChild(link);
+    link.click(); // Downloads the file
+    document.body.removeChild(link);
+    // 
+    // fs.writeFile("IGO-Unique-barcodes.csv", csvContent);
   };
 
   /** Below is a working code for export xlsx */

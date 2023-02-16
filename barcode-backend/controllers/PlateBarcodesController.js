@@ -62,17 +62,3 @@ exports.getNumOfBarcodes = [
     // res.status(200).json({ error: null, data: req.body.count});
   },
 ];
-
-exports.getCatFact = [
-  function (req, res) {
-    getCatFact()
-      .then((fact) => {
-        console.log(fact);
-        return apiResponse.successResponseWithData(res, 'success', fact);
-      })
-      .catch((response) => {
-        console.log('error');
-        return apiResponse.errorResponse(res, 'no cat facts');
-      });
-  },
-];
