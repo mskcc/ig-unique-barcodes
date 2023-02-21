@@ -1,0 +1,39 @@
+{
+  "extends": ["react-app", "prettier"],
+  "plugins": ["prettier"],
+  "rules": {
+    "react/jsx-filename-extension": [0],
+    "import/no-named-as-default": 0,
+    "react/jsx-indent": "off",
+    "react/jsx-indent-props": "off",
+    "comma-dangle": "off",
+    "max-len": "off",
+    "jsx-quotes": "off",
+    "import/no-import-module-exports": ["error", {
+      "exceptions": ["node_modules/"]
+    }],
+
+    "quotes": [
+      "warn",
+      "single"
+    ],
+    "indent": [
+      "off",
+      4
+    ],
+    "semi": [
+      "error",
+      "always"
+    ]
+
+  },
+  "globals": {
+    "window": true,
+    "document": true,
+    "localStorage": true,
+    "FormData": true,
+    "FileReader": true,
+    "Blob": true,
+    "navigator": true
+  }
+}
