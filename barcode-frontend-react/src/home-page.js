@@ -79,6 +79,7 @@ function HomePage() {
         <option value="AA">AA</option>
         <option value="MSK_CAP">MSK_CAP</option>
         <option value="MSK_hmwDNA">MSK_hmwDNA</option>
+        <option value="MSK_VDJ">MSK_VDJ</option>
         </select>
         <p>Your selected plate type is: <b>{plateType}</b></p>
         <p>Enter the number of barcodes:</p>   
