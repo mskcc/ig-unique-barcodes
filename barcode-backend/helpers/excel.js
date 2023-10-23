@@ -10,7 +10,7 @@ export const exportCSV = (barcodeData, plateType) => {
   
     today = mm + '-' + dd + '-' + yyyy;
     let fileName = 'IGO-Unique-barcodes.csv';
-    const filePath =  'smb://skimcs/MohibullahLab/Sample and Project Management/PlateBarcodePrinterFile/IGO-Unique-barcodes.csv';
+    const filePath =  'smb://rtssdc/MohibullahLab/Sample and Project Management/PlateBarcodePrinterFile/IGO-Unique-barcodes.csv';
 
     let csvContent = "";
     barcodeData.forEach(function(rowArray) {

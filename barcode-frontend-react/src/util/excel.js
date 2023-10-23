@@ -29,7 +29,7 @@ export const exportCSV = (barcodeData, plateType) => {
         .then((resp) => {
             console.log(resp);
             if (resp.data.status === 1) {
-              alert('CSV file successfully exported to "//skimcs/MohibullahLab/Sample and Project Management/PlateBarcodePrinterFile/IGO-Unique-barcodes.csv"');
+              alert('CSV file successfully exported to "//rtssdc/MohibullahLab/Sample and Project Management/PlateBarcodePrinterFile/IGO-Unique-barcodes.csv"');
             }
             return resp;
         })
