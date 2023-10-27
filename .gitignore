@@ -3,3 +3,5 @@
 .DS_Store
 
 
+barcode-backend/node_modules/*
+barcode-backend/CSVs/IGO-Unique-barcodes.csv
