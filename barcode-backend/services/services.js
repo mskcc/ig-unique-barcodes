@@ -41,7 +41,7 @@ exports.generateUniqueBarcode = async function (plateType, NumberOfBarcodes) {
       counterLengthFixed = true;
     }
     let uniquePlateBarcode = String(plateType) + "_" + String(year) + newCounter;
-    listOfBarcodes.push(uniquePlateBarcode);
+    listOfBarcodes.push(uniquePlateBarcode.trim());
     await barcodModel.findOneAndUpdate({plateType: plateType},{$set: { counter: newCounter }}); 
   }
   return listOfBarcodes;
