@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
-import { getBarcode } from './services/barcode';
+import { getBarcode, getPicklist } from './services/barcode';
 import { exportCSV } from './util/excel';
 import { makeStyles, Button, Paper } from '@material-ui/core';
+import Dropdown from './components/Dropdown';
 
 const useStyles = makeStyles((theme) => ({
   container: {
@@ -34,6 +35,9 @@ const useStyles = makeStyles((theme) => ({
 function HomePage() {
   const classes = useStyles();
   const [plateType, setPlateType] = useState('');
+  // const [plateTypeList, getPlateTypes] = useState({
+  //   plateTypeList : [],
+  // });
   const [numOfBarcodes, setNumOfBarcodes] = useState(0);
   const [errorState, setErrorState] = useState('');
   const [barcodeList, setBarcodeList] = useState({
@@ -64,13 +68,40 @@ function HomePage() {
     exportCSV(barcodeList, plateType);
   };
 
+  const pickListPlateTypes = async () => {
+    const listOfPlateTypes = await getPicklist("IGOPlateTypes");
+    const { type } = listOfPlateTypes;
+    console.log(type);
+    getPlateTypes(type);
+  };
+
   return (
     <Paper style={{maxHeight: 600, overflow: 'auto'}} className={classes.container}>
       <div className="dropdown">
       <b>Choose Plate Type:</b>
         <select id="plateTypes" onChange={(event) => setPlateType(event.target.value)}>
         <option value=" "> ---Plate type--- </option>  
-        <option value="MSK_DNA">MSK_DNA</option>
+        { 
+        <Dropdown
+          id="plate_Types_picklist"
+          onClick={() => pickListPlateTypes()}
+        />
+        // <Dropdown
+        //     id='test_me'
+        //     //error={!formValid.application}
+        //     onChange={this.handleDropdownChange}
+        //     onSelect={this.handleDropdownChange}
+        //     items={form.applications.map((option) => ({
+        //         value: option,
+        //         label: option,
+        //     }))}
+        //     loading={form.formIsLoading}
+        //     value={{
+        //         value: form.selected.application,
+        //         label: form.selected.application,
+        //     }}
+        // />
+        /* <option value="MSK_DNA">MSK_DNA</option>
         <option value="MSK_RNA">MSK_RNA</option>
         <option value="MSK_cDNA">MSK_cDNA</option>
         <option value="MSK_LIB">MSK_LIB</option>
@@ -80,7 +111,7 @@ function HomePage() {
         <option value="MSK_CAP">MSK_CAP</option>
         <option value="MSK_hmwDNA">MSK_hmwDNA</option>
         <option value="MSK_VDJ">MSK_VDJ</option>
-        <option value="MSK_SS">MSK_SS</option>
+        <option value="MSK_SS">MSK_SS</option> */}
         </select>
         <p>Your selected plate type is: <b>{plateType}</b></p>
         <p>Enter the number of barcodes:</p>   

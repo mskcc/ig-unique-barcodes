@@ -1,6 +1,7 @@
 const apiResponse = require('../helpers/apiResponse');
 const barcodeModel = require('../models/BarcodeGenModel');
 const { generateUniqueBarcode, getCatFact } = require('../services/services');
+const { query } = require('express-validator');
 const { logger } = require('../helpers/winston');
 const fs = require('fs');
 
@@ -11,6 +12,8 @@ const fs = require('fs');
  */
 exports.generateUniqueBarcode = [
   function (req, res) {
+    const plateTypeList = 'IGOPlateTypes';
+    let plateTypesPromise = cache.get(`${plateTypeList}-Picklist`, () => services.getPicklist(plateTypeList));
     console.log('info', 'Generating plate barcode');
     let plateType = req.query.plateType;
     let numberOfBarcodes = req.query.numOfBarcodes;
@@ -60,5 +63,33 @@ exports.getNumOfBarcodes = [
       }
     return req.body.count;
     // res.status(200).json({ error: null, data: req.body.count});
+  },
+];
+
+exports.picklist = [
+  query('picklist').isLength({ min: 1 }).trim().withMessage('Picklist must be specified.'),
+  function (req, res) {
+      try {
+          const errors = validationResult(req);
+          if (!errors.isEmpty()) {
+              return apiResponse.validationErrorWithData(res, 'Validation error.', errors.array());
+          } else {
+              let picklist = req.query.picklist;
+              cache
+                  .get(picklist + '-Picklist', () => services.getPicklist(picklist))
+                  .then((picklistResult) => {
+                      if (picklistResult) {
+                          return apiResponse.successResponseWithData(res, 'Operation success', {
+                              listname: picklist,
+                              picklist: picklistResult,
+                          });
+                      } else {
+                          return apiResponse.errorResponse(res, `Could not retrieve picklist '${picklist}'.`);
+                      }
+                  });
+          }
+      } catch (err) {
+          return apiResponse.errorResponse(res, err);
+      }
   },
 ];

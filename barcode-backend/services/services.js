@@ -2,6 +2,7 @@ const barcodModel = require('../models/BarcodeGenModel')
 const axios = require('axios');
 const { logger } = require('../helpers/winston');
 
+const LIMS_URL = process.env.LIMS_URL;
 /**
  * Returns unique barcodes 
  * @returns {Promise<*>}
@@ -45,4 +46,29 @@ exports.generateUniqueBarcode = async function (plateType, NumberOfBarcodes) {
     await barcodModel.findOneAndUpdate({plateType: plateType},{$set: { counter: newCounter }}); 
   }
   return listOfBarcodes;
+};
+
+exports.getPicklist = (listname) => {
+  const url = `${Config.NODE_API_ROOT}/getPickListValues?list=${listname}`;
+  logger.info(`Sending request to ${url}`);
+  return axios
+      .get(url, {
+          auth: { ...LIMS_AUTH },
+          ...axiosConfig,
+      })
+      .then((resp) => {
+          if (resp.data && resp.data[0] && resp.data[0].includes('ERROR')) {
+              errorlog(url);
+              return [];
+          }
+          info(url);
+          return resp;
+      })
+      .catch((error) => {
+          errorlog(url);
+          throw error;
+      })
+      .then((resp) => {
+          return formatData(resp);
+      });
 };
