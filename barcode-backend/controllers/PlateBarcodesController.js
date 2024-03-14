@@ -1,6 +1,6 @@
 const apiResponse = require('../helpers/apiResponse');
 const barcodeModel = require('../models/BarcodeGenModel');
-const { generateUniqueBarcode, getCatFact } = require('../services/services');
+const { generateUniqueBarcode, getPlateListPicklist } = require('../services/services');
 const { logger } = require('../helpers/winston');
 const fs = require('fs');
 
@@ -60,5 +60,24 @@ exports.getNumOfBarcodes = [
       }
     return req.body.count;
     // res.status(200).json({ error: null, data: req.body.count});
+  },
+];
+
+exports.picklist = [
+  function (req, res) {
+    const picklistPromise = getPlateListPicklist();
+
+    Promise.all([picklistPromise]).then(picklistResponse => {
+      if (!picklistResponse || picklistResponse.length === 0) {
+        return apiResponse.errorResponse(res, `No data for picklist "Barcode+Plate+Types".`);
+      }
+
+      const [picklist] = picklistResponse;
+      return apiResponse.successResponseWithData(res, 'success', picklist);
+
+    }).catch(e => {
+      console.log(e);
+      return apiResponse.errorResponse(res, `ERROR querying LIMS: ${e}`);
+    });
   },
 ];

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { getBarcode } from './services/barcode';
+import React, { useState, useEffect } from 'react';
+import { getBarcode, getPlateTypes } from './services/barcode';
 import { exportCSV } from './util/excel';
 import { makeStyles, Button, Paper } from '@material-ui/core';
 
@@ -39,6 +39,20 @@ function HomePage() {
   const [barcodeList, setBarcodeList] = useState({
     barcodeList : [],
   });
+  const [plateTypesList, setPlateTypesList] = useState([]);
+
+  useEffect(() => {
+    const fetchPlateTypes = async () => {
+      const response = await getPlateTypes();
+      console.log(response);
+      const list = response.data || ['---'];
+      setPlateTypesList(list);
+    }
+
+    if (plateTypesList.length === 0) {
+      fetchPlateTypes().catch(error => console.log(error));
+    }
+  }, [plateTypesList]);
 
   const validate = () => {
     if (!numOfBarcodes || isNaN(numOfBarcodes)) {
