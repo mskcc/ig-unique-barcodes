@@ -47,7 +47,7 @@ function HomePage() {
       console.log(response);
       const list = response.data || ['---'];
       setPlateTypesList(list);
-    }
+    };
 
     if (plateTypesList.length === 0) {
       fetchPlateTypes().catch(error => console.log(error));

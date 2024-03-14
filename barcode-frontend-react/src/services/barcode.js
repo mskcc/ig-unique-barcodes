@@ -19,7 +19,7 @@ export function getBarcode(plateType, numOfBarcodes) {
 
 export function getPlateTypes() {
     return axios.get(`${BACKEND}/api/getBarcode/picklist`)
-        .then(resp => {return resp})
+        .then(resp => {return resp;})
         .catch(error => console.error(`Unable to load plate type picklist: ${error}`));
 };
 
