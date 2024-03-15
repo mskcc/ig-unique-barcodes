@@ -1,7 +1,6 @@
 const apiResponse = require('../helpers/apiResponse');
 const barcodeModel = require('../models/BarcodeGenModel');
 const { generateUniqueBarcode, getPlateListPicklist } = require('../services/services');
-const { logger } = require('../helpers/winston');
 const fs = require('fs');
 
 /**
@@ -15,19 +14,44 @@ exports.generateUniqueBarcode = [
     let plateType = req.query.plateType;
     let numberOfBarcodes = req.query.numOfBarcodes;
 
-    // let barcodeGeneratePromise = barcodeModel.findOne({plateType: plateType});
-    generateUniqueBarcode(plateType, numberOfBarcodes)
-    // Promise.all([barcodeGeneratePromise])
-      .then((results) => {
-        console.log(results);
-        if (!results) {
-          return apiResponse.errorResponse(res, `Could not generate barcodes.`);
-        }
-        return apiResponse.successResponseWithData(res, 'success', results);
-      })
-      .catch((err) => {
-        return apiResponse.errorResponse(res, err.message);
-      });
+    let barcodeGeneratePromise = barcodeModel.findOne({plateType: plateType});
+
+    Promise.all([barcodeGeneratePromise]).then(results => {
+      let barcodeRecord = results[0];
+      
+      if (!barcodeRecord || barcodeRecord.length === 0) {
+        
+        barcodeModel.create({plateType : plateType, counter : 0})
+          .then(() => {
+            generateUniqueBarcode(plateType, numberOfBarcodes)
+              .then((results) => {
+                console.log(results);
+                if (!results) {
+                  return apiResponse.errorResponse(res, `Could not generate barcodes.`);
+                }
+                return apiResponse.successResponseWithData(res, 'success', results);
+              })
+              .catch((err) => {
+                return apiResponse.errorResponse(res, err.message);
+              });
+          });
+
+      } else {
+        
+        // already existing barcode record
+        generateUniqueBarcode(plateType, numberOfBarcodes)
+          .then((results) => {
+            console.log(results);
+            if (!results) {
+              return apiResponse.errorResponse(res, `Could not generate barcodes.`);
+            }
+            return apiResponse.successResponseWithData(res, 'success', results);
+          })
+          .catch((err) => {
+            return apiResponse.errorResponse(res, err.message);
+          });
+      }
+    });
   },
 ];
 

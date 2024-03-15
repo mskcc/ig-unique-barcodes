@@ -40,7 +40,7 @@ exports.generateUniqueBarcode = async function (plateType, NumberOfBarcodes) {
     // MSK_DNA_2200001
     let counterLengthFixed = true;
     let prevCounterLength = String(counter).length;
-    newCounter = parseInt(counter) + 1;
+    let newCounter = parseInt(counter) + 1;
     let newCounterLength = String(newCounter).length;
     if (newCounterLength > prevCounterLength) {
       counterLengthFixed = false;
