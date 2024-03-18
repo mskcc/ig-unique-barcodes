@@ -16,6 +16,13 @@ export function getBarcode(plateType, numOfBarcodes) {
                     // throw new Error('Unable to generate barcodes: ' + error.message);
                 });
 };
+
+export function getPlateTypes() {
+    return axios.get(`${BACKEND}/api/getBarcode/picklist`)
+        .then(resp => {return resp;})
+        .catch(error => console.error(`Unable to load plate type picklist: ${error}`));
+};
+
 // export function exportExcel(barcodeList) {
 //     return axios.get(`${BACKEND}/api/exportExcel/columns=${barcodeList}`)
 //                 .then(resp => {return parseResp(resp); })

@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { getBarcode } from './services/barcode';
+import React, { useState, useEffect } from 'react';
+import { getBarcode, getPlateTypes } from './services/barcode';
 import { exportCSV } from './util/excel';
 import { makeStyles, Button, Paper } from '@material-ui/core';
 
@@ -39,6 +39,22 @@ function HomePage() {
   const [barcodeList, setBarcodeList] = useState({
     barcodeList : [],
   });
+  const [plateTypesList, setPlateTypesList] = useState([]);
+
+  useEffect(() => {
+    const fetchPlateTypes = async () => {
+      const response = await getPlateTypes();
+      // console.log(response);
+      const list = response.data.data || ['---'];
+      setPlateTypesList(list);
+    };
+
+    if (plateTypesList.length === 0) {
+      fetchPlateTypes().catch(error => console.log(error));
+    } else {
+      console.log(plateTypesList);
+    }
+  }, [plateTypesList]);
 
   const validate = () => {
     if (!numOfBarcodes || isNaN(numOfBarcodes)) {
@@ -69,20 +85,10 @@ function HomePage() {
       <div className="dropdown">
       <b>Choose Plate Type:</b>
         <select id="plateTypes" onChange={(event) => setPlateType(event.target.value)}>
-        <option value=" "> ---Plate type--- </option>  
-        <option value="MSK_DNA">MSK_DNA</option>
-        <option value="MSK_RNA">MSK_RNA</option>
-        <option value="MSK_cDNA">MSK_cDNA</option>
-        <option value="MSK_LIB">MSK_LIB</option>
-        <option value="MSK_uLIB">MSK_uLIB</option>
-        <option value="CRISPR">CRISPR</option>
-        <option value="AA">AA</option>
-        <option value="MSK_CAP">MSK_CAP</option>
-        <option value="MSK_hmwDNA">MSK_hmwDNA</option>
-        <option value="MSK_VDJ">MSK_VDJ</option>
-        <option value="MSK_SS">MSK_SS</option>
-        <option value="MSKSAILcDNA">MSKSAILcDNA</option>
-        <option value="MSKSAILLIB">MSKSAILLIB</option>
+          <option value=" "> ---Plate type--- </option>
+          {plateTypesList.map(type => (
+            <option value={type}>{type}</option>
+          ))}
         </select>
         <p>Your selected plate type is: <b>{plateType}</b></p>
         <p>Enter the number of barcodes:</p>   

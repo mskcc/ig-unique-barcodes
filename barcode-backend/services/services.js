@@ -1,6 +1,23 @@
-const barcodModel = require('../models/BarcodeGenModel')
+const https = require('https');
+const barcodModel = require('../models/BarcodeGenModel');
 const axios = require('axios');
-const { logger } = require('../helpers/winston');
+
+const LIMS_AUTH = {
+  username: process.env.LIMS_USER,
+  password: process.env.LIMS_PW,
+};
+const LIMS_URL = process.env.LIMS_URL;
+const agent = new https.Agent({
+  rejectUnauthorized: false,
+});
+const axiosConfig = {
+  httpsAgent: agent
+};
+const formatData = function (resp) {
+  const data = resp.data || [];
+  return data;
+};
+
 
 /**
  * Returns unique barcodes 
@@ -23,7 +40,7 @@ exports.generateUniqueBarcode = async function (plateType, NumberOfBarcodes) {
     // MSK_DNA_2200001
     let counterLengthFixed = true;
     let prevCounterLength = String(counter).length;
-    newCounter = parseInt(counter) + 1;
+    let newCounter = parseInt(counter) + 1;
     let newCounterLength = String(newCounter).length;
     if (newCounterLength > prevCounterLength) {
       counterLengthFixed = false;
@@ -45,4 +62,22 @@ exports.generateUniqueBarcode = async function (plateType, NumberOfBarcodes) {
     await barcodModel.findOneAndUpdate({plateType: plateType},{$set: { counter: newCounter }}); 
   }
   return listOfBarcodes;
+};
+
+exports.getPlateListPicklist = () => {
+  const url = `${LIMS_URL}/getPickListValues?list=Barcode+Plate+Types`;
+    return axios
+        .get(url, {
+            auth: { ...LIMS_AUTH },
+            ...axiosConfig,
+        })
+        .then((resp) => {
+            return resp;
+        })
+        .catch((error) => {
+            throw error;
+        })
+        .then((resp) => {
+            return formatData(resp);
+        });
 };
