@@ -2,8 +2,8 @@
 
 
 ## Description
-https://mskconfluence.mskcc.org/x/1JjkBQ\n
-https://mskconfluence.mskcc.org/x/CC16C
+- https://mskconfluence.mskcc.org/x/1JjkBQ
+- https://mskconfluence.mskcc.org/x/CC16C
 
 ## Dependencies
 - mongo
