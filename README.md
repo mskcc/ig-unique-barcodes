@@ -2,7 +2,8 @@
 
 
 ## Description
-
+https://mskconfluence.mskcc.org/x/1JjkBQ
+https://mskconfluence.mskcc.org/x/CC16C
 
 ## Dependencies
 - mongo
@@ -21,3 +22,4 @@ mongod
 cd ./barcode-backend && npm install && npm run dev
 ```
 ### III) Deployment
+https://mskconfluence.mskcc.org/x/CC16C
